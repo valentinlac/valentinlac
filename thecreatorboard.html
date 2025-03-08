@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Creator Board - valentinlac</title>
+    <style>
+        :root {
+            --accent-blue: #bdbdf4;
+            --dark-bg: #000000;
+            --white: #ffffff;
+            --card-bg: #000000; /* Changé pour noir comme le fond */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Montserrat, sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--white);
+            font-weight: 600;
+            letter-spacing: -1.5px;
+        }
+
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            padding: 1rem 1rem;
+            margin-right: 2rem;
+            z-index: 100;
+            display: flex;
+            gap: 1rem;
+            background: transparent;
+        }
+
+        .nav-item {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 1.1rem;
+            position: relative;
+            padding: 0.3rem 0.7rem;
+            transition: filter 0.3s ease;
+        }
+
+        .nav-item:hover {
+            filter: blur(4px);
+        }
+
+        .product-section {
+            padding: 8rem 4rem 4rem 4rem;
+            min-height: 100vh;
+            background-color: var(--dark-bg);
+        }
+
+        .product-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .product-gallery {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .gallery-container {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .gallery-slide {
+            min-width: 100%;
+            height: 500px; /* Modifié à 500px */
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .gallery-nav {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .gallery-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .gallery-dot.active {
+            background-color: var(--accent-blue);
+        }
+
+        .gallery-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.6);
+            color: var(--white);
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            z-index: 10;
+        }
+
+        .gallery-arrow-left {
+            left: 15px;
+        }
+
+        .gallery-arrow-right {
+            right: 15px;
+        }
+
+        .product-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-title {
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            color: var(--white);
+        }
+
+        .product-price-container {
+            display: flex;
+            align-items: baseline;
+            margin-bottom: 2rem;
+        }
+
+        .product-price {
+            font-size: 2.5rem;
+            color: var(--accent-blue);
+            font-weight: 900;
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            color: gray;
+            font-size: 1.5rem;
+            margin-right: 15px;
+        }
+
+        .discount {
+            color: red;
+            font-size: 1.2rem;
+            margin-left: 10px;
+            padding: 4px 8px;
+            background: rgba(255, 0, 0, 0.1);
+            border-radius: 4px;
+        }
+
+        .product-description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+            letter-spacing: -0.5px;
+        }
+
+        .product-features {
+            margin-bottom: 2rem;
+        }
+
+        .features-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent-blue);
+        }
+
+        .features-list {
+            list-style: none;
+        }
+
+        .feature-item {
+            margin-bottom: 0.7rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .feature-icon {
+            color: var(--accent-blue);
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        .buy-button {
+            padding: 1rem 2rem;
+            border-radius: 25px; /* Modifié pour correspondre au deuxième code */
+            font-weight: 600;
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            isolation: isolate;
+            background-color: transparent;
+            color: var(--white);
+            border: 2px solid var(--white);
+            width: 80%;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .buy-button .hover-effect {
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            opacity: 0;
+            transition: all 0.3s ease;
+            filter: blur(8px);
+            background: radial-gradient(
+                circle,
+                var(--accent-blue) 30%,
+                rgba(189, 189, 244, 0.7) 70%,
+                rgba(189, 189, 244, 0.4) 100%
+            );
+        }
+
+        .testimonials {
+            margin-top: 5rem;
+            padding: 3rem;
+            background-color: var(--dark-bg); /* Changé pour noir comme le fond */
+            border-radius: 10px;
+        }
+
+        .testimonials-title {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .testimonial-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        .testimonial-author {
+            font-weight: 700;
+            color: var(--accent-blue);
+        }
+
+        @media screen and (max-width: 992px) {
+            .product-container {
+                grid-template-columns: 1fr;
+            }
+
+            .product-gallery {
+                margin-bottom: 2rem;
+            }
+
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media screen and (max-width: 767px) {
+            .nav-bar {
+                padding: 1rem;
+                margin-right: 0;
+            }
+
+            .product-section {
+                padding: 6rem 2rem 2rem 2rem;
+            }
+
+            .product-title {
+                font-size: 2.2rem;
+            }
+
+            .gallery-slide {
+                height: 350px;
+            }
+            
+            .buy-button {
+                width: 100%;
+            }
+            
+            .buy-button .hover-effect {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-bar">
+        <a href="index.html" class="nav-item">Home</a>
+        <a href="tools.html" class="nav-item">My tools</a>
+    </nav>
+
+    <main class="product-section">
+        <div class="product-container">
+            <div class="product-gallery">
+                <button class="gallery-arrow gallery-arrow-left">&#10094;</button>
+                <button class="gallery-arrow gallery-arrow-right">&#10095;</button>
+                
+                <div class="gallery-container">
+                    <div class="gallery-slide">
+                        <img src="images/notion/1.png" alt="The Creator Board - Dashboard" class="gallery-image">
+                    </div>
+                    <div class="gallery-slide">
+                        <img src="images/notion/2.png" alt="The Creator Board - Content Planning" class="gallery-image">
+                    </div>
+                    <div class="gallery-slide">
+                        <img src="images/notion/3.png" alt="The Creator Board - Analytics" class="gallery-image">
+                    </div>
+                    <div class="gallery-slide">
+                        <img src="images/notion/4.png" alt="The Creator Board - Ideas Bank" class="gallery-image">
+                    </div>
+                </div>
+                
+                <div class="gallery-nav">
+                    <div class="gallery-dot active"></div>
+                    <div class="gallery-dot"></div>
+                    <div class="gallery-dot"></div>
+                    <div class="gallery-dot"></div>
+                </div>
+            </div>
+            
+            <div class="product-info">
+                <h1 class="product-title">The Creator <span class="text-accent">Board</span></h1>
+                
+                <div class="product-price-container">
+                    <span class="old-price">35€</span>
+                    <span class="product-price">20€</span>
+                    <span class="discount">-45%</span>
+                </div>
+                
+                <div class="product-description">
+                    <p>Le Creator Board est un template Notion complet conçu spécifiquement pour les créateurs de contenu. Optimisez votre flux de travail, planifiez votre contenu stratégiquement et suivez vos performances - tout au même endroit.</p>
+                    <br>
+                    <p>Cette solution tout-en-un vous permet de passer moins de temps à organiser et plus de temps à créer du contenu qui fait résonner votre audience.</p>
+                </div>
+                
+                <div class="product-features">
+                    <h3 class="features-title">Ce template inclut :</h3>
+                    <ul class="features-list">
+                        <li class="feature-item">
+                            <span class="feature-icon">✓</span> Dashboard principal avec métriques clés
+                        </li>
+                        <li class="feature-item">
+                            <span class="feature-icon">✓</span> Calendrier éditorial complet
+                        </li>
+                        <li class="feature-item">
+                            <span class="feature-icon">✓</span> Banque d'idées de contenu
+                        </li>
+                        <li class="feature-item">
+                            <span class="feature-icon">✓</span> Suivi des performances par plateforme
+                        </li>
+                        <li class="feature-item">
+                            <span class="feature-icon">✓</span> Planificateur hebdomadaire
+                        </li>
+                        <li class="feature-item">
+                            <span class="feature-icon">✓</span> Système de gestion des collaborations
+                        </li>
+                        <li class="feature-item">
+                            <span class="feature-icon">✓</span> Accès à vie et mises à jour gratuites
+                        </li>
+                    </ul>
+                </div>
+                
+                <button class="buy-button">
+                    <div class="hover-effect"></div>
+                    Acheter maintenant
+                </button>
+            </div>
+        </div>
+        
+        <div class="testimonials">
+            <h2 class="testimonials-title">Ce que disent nos <span class="text-accent">clients</span></h2>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"Ce template a complètement transformé ma façon de créer du contenu. Je suis tellement plus organisé maintenant et je vois des résultats concrets avec l'augmentation de mon audience."</p>
+                    <p class="testimonial-author">- Sophie M.</p>
+                </div>
+                
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"L'investissement en vaut vraiment la peine. J'économise au moins 5 heures par semaine grâce à ces outils d'organisation. Merci pour cette ressource incroyable!"</p>
+                    <p class="testimonial-author">- Thomas L.</p>
+                </div>
+                
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"Je cherchais une solution pour organiser mon contenu sur toutes les plateformes. Ce template est exactement ce dont j'avais besoin - simple mais complet."</p>
+                    <p class="testimonial-author">- Emma D.</p>
+                </div>
+                
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"Le meilleur investissement que j'ai fait pour ma carrière de créateur. La banque d'idées m'aide énormément quand je manque d'inspiration!"</p>
+                    <p class="testimonial-author">- Maxime P.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Carousel functionality
+        const galleryContainer = document.querySelector('.gallery-container');
+        const slides = document.querySelectorAll('.gallery-slide');
+        const dots = document.querySelectorAll('.gallery-dot');
+        const prevBtn = document.querySelector('.gallery-arrow-left');
+        const nextBtn = document.querySelector('.gallery-arrow-right');
+        
+        let currentSlide = 0;
+        const slideCount = slides.length;
+        
+        function goToSlide(slideIndex) {
+            if (slideIndex < 0) {
+                slideIndex = slideCount - 1;
+            } else if (slideIndex >= slideCount) {
+                slideIndex = 0;
+            }
+            
+            galleryContainer.style.transform = `translateX(-${slideIndex * 100}%)`;
+            
+            // Update dots
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[slideIndex].classList.add('active');
+            
+            currentSlide = slideIndex;
+        }
+        
+        // Set up event listeners
+        prevBtn.addEventListener('click', () => {
+            goToSlide(currentSlide - 1);
+        });
+        
+        nextBtn.addEventListener('click', () => {
+            goToSlide(currentSlide + 1);
+        });
+        
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                goToSlide(index);
+            });
+        });
+        
+        // Auto advance slides
+        let slideInterval = setInterval(() => {
+            goToSlide(currentSlide + 1);
+        }, 5000);
+        
+        // Pause auto advance on hover
+        galleryContainer.addEventListener('mouseenter', () => {
+            clearInterval(slideInterval);
+        });
+        
+        galleryContainer.addEventListener('mouseleave', () => {
+            slideInterval = setInterval(() => {
+                goToSlide(currentSlide + 1);
+            }, 5000);
+        });
+        
+        // Effet de curseur pour le bouton (comme dans le deuxième code)
+        document.querySelectorAll('.buy-button').forEach(button => {
+            const hoverEffect = button.querySelector('.hover-effect');
+            let isHovered = false;
+            let rafId = null;
+            
+            const updateHoverEffect = (e) => {
+                if (!isHovered) return;
+                
+                const rect = button.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                rafId = requestAnimationFrame(() => {
+                    hoverEffect.style.left = `${x}px`;
+                    hoverEffect.style.top = `${y}px`;
+                    hoverEffect.style.opacity = '1';
+                });
+            };
+    
+            button.addEventListener('mousemove', updateHoverEffect);
+            button.addEventListener('mouseenter', (e) => {
+                isHovered = true;
+                hoverEffect.style.transition = 'opacity 0.3s ease';
+                updateHoverEffect(e);
+            });
+            button.addEventListener('mouseleave', () => {
+                isHovered = false;
+                if (rafId) {
+                    cancelAnimationFrame(rafId);
+                }
+                hoverEffect.style.opacity = '0';
+            });
+        });
+    </script>
+</body>
+</html>

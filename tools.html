@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Tools - valentinlac</title>
+    <style>
+        :root {
+            --accent-blue: #bdbdf4;
+            --dark-bg: #000000;
+            --white: #ffffff;
+            --card-bg: #1a1a1a; /* Couleur légèrement plus claire pour la carte */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Montserrat, sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--white);
+            font-weight: 600;
+            letter-spacing: -1.5px;
+        }
+
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            padding: 1rem 1rem;
+            margin-right: 2rem;
+            z-index: 100;
+            display: flex;
+            gap: 1rem;
+            background: transparent;
+        }
+
+        .nav-item {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 1.1rem;
+            position: relative;
+            padding: 0.3rem 0.7rem;
+            transition: filter 0.3s ease;
+        }
+
+        .nav-item:hover {
+            filter: blur(4px);
+        }
+
+        .hero-section {
+            position: relative;
+            padding: 8rem 4rem 4rem 4rem;
+            min-height: 80vh;
+            display: flex;
+            overflow: hidden;
+            background-color: var(--dark-bg);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 2rem;
+            letter-spacing: -3px;
+            text-align: center;
+            width: 100%;
+        }
+
+        .text-accent {
+            color: var(--accent-blue);
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .tool-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 2rem;
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .tool-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent-blue);
+            text-align: center;
+        }
+
+        .tool-description {
+            font-size: 1rem;
+            opacity: 0.8;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .tool-link {
+            padding: 1rem 2rem;
+            border-radius: 5px;
+            font-weight: 600;
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            isolation: isolate;
+            background-color: transparent;
+            color: var(--white);
+            border: 2px solid var(--white);
+            width: 80%;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .tool-link .hover-effect {
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            opacity: 0;
+            transition: all 0.3s ease;
+            filter: blur(8px);
+            background: radial-gradient(
+                circle,
+                var(--accent-blue) 30%,
+                rgba(189, 189, 244, 0.7) 70%,
+                rgba(189, 189, 244, 0.4) 100%
+            );
+        }
+
+        .products-section {
+            padding: 4rem;
+            background-color: var(--dark-bg);
+        }
+
+        .products-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .products-grid {
+            display: flex;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .product-card {
+            text-align: center;
+            transition: transform 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            max-width: 350px;
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            text-decoration: none;
+            display: block;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .product-title {
+            font-size: 1.5rem;
+            margin: 1rem 0;
+            color: var(--white);
+        }
+
+        .product-price {
+            font-size: 2rem;
+            color: var(--accent-blue);
+            font-weight: 900;
+            margin-top: 0.5rem;
+        }
+        .old-price {
+            text-decoration: line-through;
+            color: gray;
+            font-size: 1.5rem;
+            margin-right: 15px;
+        }
+
+        .discount {
+            color: red;
+            font-size: 1.5rem;
+            margin-left: 10px;
+        }
+
+        @media screen and (max-width: 767px) {
+            .nav-bar {
+                padding: 1rem;
+                margin-right: 0;
+            }
+
+            .hero-section {
+                padding: 6rem 2rem 2rem 2rem;
+            }
+
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .tools-grid {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+
+            .products-section {
+                padding: 2rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .product-image {
+                height: 250px;
+            }
+
+            .tool-link .hover-effect {
+                display: none;
+            }
+
+            .tool-link {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-bar">
+        <a href="index.html" class="nav-item">Home</a>
+        <a href="tools.html" class="nav-item">My tools</a>
+    </nav>
+
+    <main class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title">
+                My <span class="text-accent">Tools</span> for Content Creation
+            </h1>
+
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <h2 class="tool-title">My products</h2>
+                    <p class="tool-description">
+                        Thanks to my notion template, my entire week is planned, including tracking results (entered manually), clear organisation and, above all, ease of use.
+                    </p>
+                    <a href="myprodcuts.html" class="tool-link">
+                        <div class="hover-effect"></div>
+                        See more
+                    </a>
+                </div>
+
+                <div class="tool-card">
+                    <h2 class="tool-title">My courses</h2>
+                    <p class="tool-description">
+                        Develop effective content strategies that engage your audience and grow your personal brand.
+                    </p>
+                    <a href="#" class="tool-link">
+                        <div class="hover-effect"></div>
+                        See more
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <section class="products-section">
+        <div class="products-container">
+            <h2 class="section-title">All My <span class="text-accent">Products</span></h2>
+            
+            <div class="products-grid">
+                <a href="products/thecreatorboard/thecreatorboard.html" class="product-card">
+                    <img src="images/notion/1.png" alt="Ultimate Creator Pack" class="product-image">
+                    <h3 class="product-title">The Creator Board</h3>
+                    <p class="product-price">
+                        <span class="old-price">35€</span>
+                        20€
+                        <span class="discount">-45%</span>
+                    </p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.querySelectorAll('.tool-link').forEach(button => {
+            const hoverEffect = button.querySelector('.hover-effect');
+            let isHovered = false;
+            
+            button.addEventListener('mousemove', e => {
+                if (!isHovered) return;
+                
+                const rect = button.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                requestAnimationFrame(() => {
+                    hoverEffect.style.left = x + 'px';
+                    hoverEffect.style.top = y + 'px';
+                    hoverEffect.style.opacity = '1';
+                });
+            });
+
+            button.addEventListener('mouseenter', () => {
+                isHovered = true;
+                hoverEffect.style.opacity = '1';
+                hoverEffect.style.transition = 'opacity 0.3s ease, filter 0.3s ease';
+            });
+
+            button.addEventListener('mouseleave', () => {
+                isHovered = false;
+                hoverEffect.style.opacity = '0';
+            });
+        });
+    </script>
+</body>
+</html>
