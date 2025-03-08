@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Creator Board - valentinlac</title>
+    <style>
+        :root {
+            --accent-blue: #bdbdf4;
+            --dark-bg: #000000;
+            --white: #ffffff;
+            --card-bg: #000000;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Montserrat, sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--white);
+            font-weight: 600;
+            letter-spacing: -1.5px;
+        }
+
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            padding: 1rem 1rem;
+            margin-right: 2rem;
+            z-index: 100;
+            display: flex;
+            gap: 1rem;
+            background: transparent;
+        }
+
+        .nav-item {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 1.1rem;
+            position: relative;
+            padding: 0.3rem 0.7rem;
+            transition: filter 0.3s ease;
+        }
+
+        .nav-item:hover {
+            filter: blur(4px);
+        }
+
+        .product-section {
+            padding: 8rem 4rem 4rem 4rem;
+            min-height: 100vh;
+            background-color: var(--dark-bg);
+        }
+
+        .product-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .product-gallery {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .gallery-wrapper {
+            position: relative;
+            width: 100%;
+            height: 450px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .gallery-container {
+            display: flex;
+            transition: transform 0.5s ease;
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .gallery-slide {
+            min-width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; 
+            border-radius: 10px;
+        }
+
+        .gallery-nav {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+            z-index: 20;
+        }
+
+        .gallery-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .gallery-dot.active {
+            background-color: var(--accent-blue);
+        }
+
+        .gallery-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: var(--white);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: opacity 0.3s ease, background 0.3s ease;
+            opacity: 0.7;
+        }
+
+        .gallery-arrow:hover {
+            opacity: 1;
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .gallery-arrow-left {
+            left: 10px;
+        }
+
+        .gallery-arrow-right {
+            right: 10px;
+        }
+
+        .arrow-icon {
+            width: 24px;
+            height: 24px;
+            fill: var(--white);
+        }
+
+        .mini-testimonials {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .mini-testimonial {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        .mini-testimonial-text {
+            font-style: italic;
+            opacity: 0.85;
+            margin-bottom: 5px;
+        }
+
+        .mini-testimonial-author {
+            font-weight: 700;
+            color: var(--accent-blue);
+            font-size: 0.8rem;
+            text-align: right;
+        }
+
+        .product-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-title {
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            color: var(--white);
+        }
+
+        .text-accent {
+            color: var(--accent-blue);
+        }
+
+        .product-price-container {
+            display: flex;
+            align-items: baseline;
+            margin-bottom: 2rem;
+        }
+
+        .product-price {
+            font-size: 2.5rem;
+            color: var(--accent-blue);
+            font-weight: 900;
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            color: gray;
+            font-size: 1.5rem;
+            margin-right: 15px;
+        }
+
+        .discount {
+            color: red;
+            font-size: 1.2rem;
+            margin-left: 10px;
+            padding: 4px 8px;
+            background: rgba(255, 0, 0, 0.1);
+            border-radius: 4px;
+        }
+
+        .product-description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+            letter-spacing: -0.5px;
+        }
+
+        .product-features {
+            margin-bottom: 2rem;
+        }
+
+        .features-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--accent-blue);
+        }
+
+        .features-list {
+            list-style: none;
+        }
+
+        .feature-item {
+            margin-bottom: 0.7rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .feature-icon {
+            color: var(--accent-blue);
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        /* Styles for stripe buy button */
+        .stripe-buy-button-container {
+            margin-top: auto;
+            width: 80%;
+        }
+        
+        /* Media queries */
+        @media screen and (max-width: 992px) {
+            .product-container {
+                grid-template-columns: 1fr;
+            }
+
+            .product-gallery {
+                margin-bottom: 3rem;
+            }
+
+            .mini-testimonials {
+                margin-bottom: 2rem;
+            }
+            
+            .stripe-buy-button-container {
+                width: 100%;
+            }
+        }
+
+        @media screen and (max-width: 767px) {
+            .nav-bar {
+                padding: 1rem;
+                margin-right: 0;
+            }
+
+            .product-section {
+                padding: 6rem 2rem 2rem 2rem;
+            }
+
+            .product-title {
+                font-size: 2.2rem;
+            }
+
+            .gallery-wrapper {
+                height: 350px;
+            }
+            
+            .stripe-buy-button-container {
+                width: 100%;
+            }
+            
+            .arrow-icon {
+                width: 20px;
+                height: 20px;
+            }
+            
+            .mini-testimonials {
+                grid-template-columns: 1fr;
+            }
+            
+            .gallery-arrow {
+                width: 36px;
+                height: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-bar">
+        <a href="../../index.html" class="nav-item">Home</a>
+        <a href="../../tools.html" class="nav-item">My tools</a>
+    </nav>
+
+    <main class="product-section">
+        <div class="product-container">
+            <div class="product-gallery">
+                <div class="gallery-wrapper">
+                    <button class="gallery-arrow gallery-arrow-left">
+                        <svg class="arrow-icon" viewBox="0 0 24 24">
+                            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                        </svg>
+                    </button>
+                    <button class="gallery-arrow gallery-arrow-right">
+                        <svg class="arrow-icon" viewBox="0 0 24 24">
+                            <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                        </svg>
+                    </button>
+                    
+                    <div class="gallery-container">
+                        <div class="gallery-slide">
+                            <img src="1.png" alt="The Creator Board - Dashboard" class="gallery-image">
+                        </div>
+                        <div class="gallery-slide">
+                            <img src="2.png" alt="The Creator Board - Content Planning" class="gallery-image">
+                        </div>
+                        <div class="gallery-slide">
+                            <img src="3.png" alt="The Creator Board - Analytics" class="gallery-image">
+                        </div>
+                        <div class="gallery-slide">
+                            <img src="4.png" alt="The Creator Board - Ideas Bank" class="gallery-image">
+                        </div>
+                        <div class="gallery-slide">
+                            <img src="5.png" alt="The Creator Board - Weekly Planner" class="gallery-image">
+                        </div>
+                        <div class="gallery-slide">
+                            <img src="6.png" alt="The Creator Board - Collaboration System" class="gallery-image">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gallery-nav">
+                    <div class="gallery-dot active"></div>
+                    <div class="gallery-dot"></div>
+                    <div class="gallery-dot"></div>
+                    <div class="gallery-dot"></div>
+                    <div class="gallery-dot"></div>
+                    <div class="gallery-dot"></div>
+                </div>
+                
+                <div class="mini-testimonials">
+                    <div class="mini-testimonial">
+                        <p class="mini-testimonial-text">"This template has completely transformed the way I create content. I'm so much more organised now!"</p>
+                        <p class="mini-testimonial-author">- Khaled</p>
+                    </div>
+                    
+                    <div class="mini-testimonial">
+                        <p class="mini-testimonial-text">"I save at least 3 hours a week thanks to these organisational tools."</p>
+                        <p class="mini-testimonial-author">- Luis</p>
+                    </div>
+                    
+                    <div class="mini-testimonial">
+                        <p class="mini-testimonial-text">"It's a small investment, but it's a really interesting one - I'd recommend it!"</p>
+                        <p class="mini-testimonial-author">- Robin</p>
+                    </div>
+                    
+                    <div class="mini-testimonial">
+                        <p class="mini-testimonial-text">"I love the brainstorm feature, it's really helped me with my projects." </p>
+                        <p class="mini-testimonial-author">- Miriam</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="product-info">
+                <h1 class="product-title">The Creator <span class="text-accent">Board</span></h1>
+                
+                <div class="product-price-container">
+                    <span class="old-price">35€</span>
+                    <span class="product-price">20€</span>
+                    <span class="discount">-45%</span>
+                </div>
+                
+                <div class="product-description">
+                    <p>The Creator Board is a comprehensive Notion template designed specifically for content creators. Optimise your workflow, plan your content and track your performance - all in one place.</p>
+                    <br>
+                    <p>This all-in-one solution means you can spend less time organising and more time creating content that will grow your audience.</p>
+                </div>
+                
+                <div class="product-features">
+                    <h3 class="features-title">This template includes :</h3>
+                    <ul class="features-list">
+                        <li class="feature-item">
+                            <span class="feature-icon">✓</span> Brainstorm embed (LucidChart)
+                        </li>
+                        <li class="feature-item">
+                            <span class="feature-icon">✓</span> Managing / Tracking Content
+                        </li>
+                        <li class="feature-item">
+                            <span class="feature-icon">✓</span> Daily to-do list
+                        </li>
+                        <li class="feature-item">
+                            <span class="feature-icon">✓</span> Content / Everyday life planner
+                        </li>
+                        <li class="feature-item">
+                            <span class="feature-icon">✓</span> Shotlist
+                        </li>
+                        <li class="feature-item">
+                            <span class="feature-icon">✓</span> Project Managment
+                        </li>
+                        <li class="feature-item">
+                            <span class="feature-icon">✓</span> Lifetime access and free updates
+                        </li>
+                        <p> And many other features</p>
+                    </ul>
+                </div>
+                
+                <!-- Bouton Stripe avec écoute de l'événement de paiement -->
+                <div class="stripe-buy-button-container">
+                    <script async
+  src="https://js.stripe.com/v3/buy-button.js">
+</script>
+
+<stripe-buy-button
+  buy-button-id="buy_btn_1R0Vo7JIQHAmGvqdunDsYuCG"
+  publishable-key="pk_test_51R0TDeJIQHAmGvqdB2fORbtvLF6lN866kcw5wxKwZMK8Uhh1Yc570IBBDWZvwTZ9B38wDwkCiR44LHqNs92YthOW00pKXSJmAo"
+>
+</stripe-buy-button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Carousel functionality
+        const galleryContainer = document.querySelector('.gallery-container');
+        const slides = document.querySelectorAll('.gallery-slide');
+        const dots = document.querySelectorAll('.gallery-dot');
+        const prevBtn = document.querySelector('.gallery-arrow-left');
+        const nextBtn = document.querySelector('.gallery-arrow-right');
+        
+        // Masquer tous les slides sauf le premier
+        slides.forEach((slide, index) => {
+            if (index !== 0) {
+                slide.style.display = 'none';
+            }
+        });
+        
+        let currentSlide = 0;
+        const slideCount = slides.length;
+        
+        function goToSlide(slideIndex) {
+            if (slideIndex < 0) {
+                slideIndex = slideCount - 1;
+            } else if (slideIndex >= slideCount) {
+                slideIndex = 0;
+            }
+            
+            // Masquer tous les slides
+            slides.forEach(slide => {
+                slide.style.display = 'none';
+            });
+            
+            // Afficher seulement le slide actuel
+            slides[slideIndex].style.display = 'flex';
+            
+            // Update dots
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[slideIndex].classList.add('active');
+            
+            currentSlide = slideIndex;
+        }
+        
+        // Set up event listeners
+        prevBtn.addEventListener('click', () => {
+            goToSlide(currentSlide - 1);
+        });
+        
+        nextBtn.addEventListener('click', () => {
+            goToSlide(currentSlide + 1);
+        });
+        
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                goToSlide(index);
+            });
+        });
+        
+        // Auto advance slides
+        let slideInterval = setInterval(() => {
+            goToSlide(currentSlide + 1);
+        }, 5000);
+        
+        // Pause auto advance on hover
+        const productGallery = document.querySelector('.product-gallery');
+        productGallery.addEventListener('mouseenter', () => {
+            clearInterval(slideInterval);
+        });
+        
+        productGallery.addEventListener('mouseleave', () => {
+            slideInterval = setInterval(() => {
+                goToSlide(currentSlide + 1);
+            }, 5000);
+        });
+
+        // Code pour détecter un paiement réussi et rediriger l'utilisateur
+        document.addEventListener('DOMContentLoaded', function() {
+            // Vérifier si on arrive d'une redirection après paiement Stripe
+            const urlParams = new URLSearchParams(window.location.search);
+            const paymentStatus = urlParams.get('payment_status');
+            
+            // Si le paramètre d'URL indique un paiement réussi
+            if (paymentStatus === 'success') {
+                // Rediriger vers la page de confirmation
+                window.location.href = './thank-you.html';
+            }
+            
+            // Écouter les événements du bouton Stripe
+            // Cette partie détecte quand un paiement est complété sur la page
+            window.addEventListener('message', function(ev) {
+                // Vérifier si le message vient de Stripe
+                if (ev.data && typeof ev.data === 'object' && ev.data.type === 'buy-button:success') {
+                    // Rediriger vers la page de confirmation après un court délai
+                    setTimeout(function() {
+                        window.location.href = './thank-you.html';
+                    }, 1000);
+                }
+            }, false);
+        });
+    </script>
+</body>
+</html>
