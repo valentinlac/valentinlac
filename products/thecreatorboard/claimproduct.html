@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Téléchargement - The Creator Board</title>
+    <style>
+        :root {
+            --accent-blue: #bdbdf4;
+            --dark-bg: #000000;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Montserrat, sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--white);
+            font-weight: 600;
+            letter-spacing: -1.5px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            padding: 1rem 1rem;
+            margin-right: 2rem;
+            z-index: 100;
+            display: flex;
+            gap: 1rem;
+            background: transparent;
+        }
+
+        .nav-item {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 1.1rem;
+            position: relative;
+            padding: 0.3rem 0.7rem;
+            transition: filter 0.3s ease;
+        }
+
+        .nav-item:hover {
+            filter: blur(4px);
+        }
+
+        .download-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 3rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .product-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            color: var(--white);
+        }
+
+        .text-accent {
+            color: var(--accent-blue);
+        }
+
+        .product-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 2rem auto;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .product-image-container {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: var(--accent-blue);
+            margin-right: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-image {
+            width: 500px;
+            height: 500px;
+            object-fit: cover;
+            transform: scale(0.12);
+            transform-origin: center;
+        }
+
+        .product-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: left;
+        }
+        
+        .copy-section {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 2rem auto;
+            max-width: 600px;
+        }
+        
+        .copy-title {
+            font-size: 1.2rem;
+            color: var(--accent-blue);
+            margin-bottom: 1rem;
+        }
+        
+        .copy-link {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            background: transparent;
+            color: var(--accent-blue);
+            border: 1px solid var(--accent-blue);
+            text-decoration: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 5px;
+            font-weight: 700;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-family: inherit;
+            position: relative;
+            overflow: hidden;
+            isolation: isolate;
+        }
+
+        .copy-link:hover {
+            background: rgba(189, 189, 244, 0.1);
+        }
+
+        .hover-effect {
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            filter: blur(8px);
+            background: radial-gradient(
+                circle,
+                rgba(189, 189, 244, 0.8) 30%,
+                rgba(189, 189, 244, 0.6) 70%,
+                rgba(189, 189, 244, 0.4) 100%
+            );
+        }
+
+        .instructions {
+            margin-top: 2rem;
+            text-align: left;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .instructions h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
+            color: var(--accent-blue);
+            text-align: center;
+        }
+
+        .instructions ol {
+            margin-left: 1.5rem;
+        }
+
+        .instructions li {
+            margin-bottom: 0.5rem;
+        }
+
+        .support-link {
+            display: block;
+            text-align: center;
+            margin-top: 2rem;
+            color: var(--accent-blue);
+            text-decoration: none;
+        }
+
+        .support-link:hover {
+            text-decoration: underline;
+        }
+        
+        #copySuccess {
+            color: #bdbdf4;
+            margin-top: 0.5rem;
+            display: none;
+        }
+        
+        @media screen and (max-width: 767px) {
+            .nav-bar {
+                padding: 1rem;
+                margin-right: 0;
+            }
+            
+            .download-container {
+                padding: 2rem 1.5rem;
+                margin: 1rem;
+            }
+
+            .product-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-bar">
+        <a href="../../index.html" class="nav-item">Home</a>
+        <a href="../../tools.html" class="nav-item">My tools</a>
+    </nav>
+
+    <div class="download-container">
+        <h1 class="product-title">Acces to <span class="text-accent">The Creator Board</span></h1>
+        
+        <div class="product-info">
+            <div class="product-image-container">
+                <img src="../../images/notion/1.png" alt="The Creator Board" class="product-image">
+            </div>
+            <div class="product-name">The Creator Board</div>
+        </div>
+
+        <p>Thank you for your purchase! You can now access your product.</p>
+
+        <div class="copy-section">
+            <p class="copy-title">Your access link </p>
+            <input type="text" id="downloadUrl" value="https://light-point-d74.notion.site/Creator-board-1a5857a1e52e80b881e5f9c8ebd499c5?pvs=73" style="width: 100%; padding: 0.8rem; margin-top: 0.5rem; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 5px; color: var(--white);" readonly>
+            <button id="copyBtn" class="copy-link">
+                Copy the link
+                <div class="hover-effect"></div>
+            </button>
+            <p id="copySuccess">Link copied !</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const copyBtn = document.getElementById('copyBtn');
+            const downloadUrl = document.getElementById('downloadUrl');
+            const copySuccess = document.getElementById('copySuccess');
+            const hoverEffect = copyBtn.querySelector('.hover-effect');
+            let isHovered = false;
+            let rafId = null;
+            
+            copyBtn.addEventListener('click', function() {
+                downloadUrl.select();
+                document.execCommand('copy');
+                
+                copySuccess.style.display = 'block';
+                setTimeout(function() {
+                    copySuccess.style.display = 'none';
+                }, 3000);
+            });
+            
+            // Effet de survol
+            const updateHoverEffect = (e) => {
+                if (!isHovered) return;
+                
+                const rect = copyBtn.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                rafId = requestAnimationFrame(() => {
+                    hoverEffect.style.left = `${x}px`;
+                    hoverEffect.style.top = `${y}px`;
+                    hoverEffect.style.opacity = '1';
+                });
+            };
+    
+            copyBtn.addEventListener('mousemove', updateHoverEffect);
+            copyBtn.addEventListener('mouseenter', (e) => {
+                isHovered = true;
+                hoverEffect.style.transition = 'opacity 0.3s ease';
+                updateHoverEffect(e);
+            });
+            copyBtn.addEventListener('mouseleave', () => {
+                isHovered = false;
+                if (rafId) {
+                    cancelAnimationFrame(rafId);
+                }
+                hoverEffect.style.opacity = '0';
+            });
+        });
+    </script>
+</body>
+</html>
