@@ -277,7 +277,7 @@
 
         /* Styles for stripe buy button */
         .stripe-buy-button-container {
-            margin-top: auto;
+            margin: 2rem 0;
             width: 80%;
         }
         
@@ -291,10 +291,6 @@
                 margin-bottom: 3rem;
             }
 
-            .mini-testimonials {
-                margin-bottom: 2rem;
-            }
-            
             .stripe-buy-button-container {
                 width: 100%;
             }
@@ -335,6 +331,19 @@
                 width: 36px;
                 height: 36px;
             }
+
+            /* Changement d'ordre pour mobile */
+            .mobile-order {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .mobile-order-1 { order: 1; }
+            .mobile-order-2 { order: 2; }
+            .mobile-order-3 { order: 3; }
+            .mobile-order-4 { order: 4; }
+            .mobile-order-5 { order: 5; }
+            .mobile-order-6 { order: 6; }
         }
     </style>
 </head>
@@ -346,6 +355,7 @@
 
     <main class="product-section">
         <div class="product-container">
+            <!-- Galerie d'images -->
             <div class="product-gallery">
                 <div class="gallery-wrapper">
                     <button class="gallery-arrow gallery-arrow-left">
@@ -390,7 +400,8 @@
                     <div class="gallery-dot"></div>
                 </div>
                 
-                <div class="mini-testimonials">
+                <!-- Témoignages -->
+                <div class="mini-testimonials mobile-order-5">
                     <div class="mini-testimonial">
                         <p class="mini-testimonial-text">"This template has completely transformed the way I create content. I'm so much more organised now!"</p>
                         <p class="mini-testimonial-author">- Khaled</p>
@@ -413,22 +424,28 @@
                 </div>
             </div>
             
-            <div class="product-info">
-                <h1 class="product-title">The Creator <span class="text-accent">Board</span></h1>
+            <div class="product-info mobile-order">
+                <!-- Titre du produit -->
+                <h1 class="product-title mobile-order-2">The Creator <span class="text-accent">Board</span></h1>
                 
-                <div class="product-price-container">
+                <!-- Prix -->
+                <div class="product-price-container mobile-order-3">
                     <span class="old-price">35€</span>
                     <span class="product-price">20€</span>
                     <span class="discount">-45%</span>
                 </div>
                 
-                <div class="product-description">
-                    <p>The Creator Board is a comprehensive Notion template designed specifically for content creators. Optimise your workflow, plan your content and track your performance - all in one place.</p>
-                    <br>
-                    <p>This all-in-one solution means you can spend less time organising and more time creating content that will grow your audience.</p>
+                <!-- Bouton d'achat juste après le prix -->
+                <div class="stripe-buy-button-container mobile-order-4">
+                    <script async src="https://js.stripe.com/v3/buy-button.js"></script>
+                    <stripe-buy-button
+                        buy-button-id="buy_btn_1R0UahJIQHAmGvqdiJ7uoRsQ"
+                        publishable-key="pk_live_51R0TDeJIQHAmGvqdBamUDTu0jJEGwGIaCbnmSlK2Yd7Sld6F9AmTRYQzTov4LaHi09kIVvOyZCS1ucntNLBScLyg00zADG7Cmb">
+                    </stripe-buy-button>
                 </div>
                 
-                <div class="product-features">
+                <!-- Fonctionnalités du produit -->
+                <div class="product-features mobile-order-5">
                     <h3 class="features-title">This template includes :</h3>
                     <ul class="features-list">
                         <li class="feature-item">
@@ -456,17 +473,11 @@
                     </ul>
                 </div>
                 
-                <!-- Bouton Stripe avec écoute de l'événement de paiement -->
-                <div class="stripe-buy-button-container">
-                    <script async
-  src="https://js.stripe.com/v3/buy-button.js">
-</script>
-
-<stripe-buy-button
-  buy-button-id="buy_btn_1R0UahJIQHAmGvqdiJ7uoRsQ"
-  publishable-key="pk_live_51R0TDeJIQHAmGvqdBamUDTu0jJEGwGIaCbnmSlK2Yd7Sld6F9AmTRYQzTov4LaHi09kIVvOyZCS1ucntNLBScLyg00zADG7Cmb"
->
-</stripe-buy-button>
+                <!-- Description du produit -->
+                <div class="product-description mobile-order-6">
+                    <p>The Creator Board is a comprehensive Notion template designed specifically for content creators. Optimise your workflow, plan your content and track your performance - all in one place.</p>
+                    <br>
+                    <p>This all-in-one solution means you can spend less time organising and more time creating content that will grow your audience.</p>
                 </div>
             </div>
         </div>
@@ -480,7 +491,7 @@
         const prevBtn = document.querySelector('.gallery-arrow-left');
         const nextBtn = document.querySelector('.gallery-arrow-right');
         
-        // Hide all slides except the first one
+        // Masquer tous les slides sauf le premier
         slides.forEach((slide, index) => {
             if (index !== 0) {
                 slide.style.display = 'none';
@@ -497,12 +508,12 @@
                 slideIndex = 0;
             }
             
-            // Hide all slides
+            // Masquer tous les slides
             slides.forEach(slide => {
                 slide.style.display = 'none';
             });
             
-            // Show only the current slide
+            // Afficher seulement le slide actuel
             slides[slideIndex].style.display = 'flex';
             
             // Update dots
@@ -544,155 +555,29 @@
             }, 5000);
         });
 
-        // Function to send customer data to webhook - IMPROVED
-        function sendToWebhook(email) {
-            // UPDATED WEBHOOK URL with correct format
-            const webhookUrl = 'https://65klv76a8gno639q3feuga4p6oniwdx4@hook.eu2.make.com';
-            
-            // Create data to send
-            const data = {
-                customer_email: email || 'unknown@email.com',
-                product: 'The Creator Board',
-                purchase_date: new Date().toISOString(),
-                price: '20€',
-                product_id: 'creator-board-template'
-            };
-            
-            console.log('Sending webhook data:', data);
-            
-            // Send data to webhook via fetch
-            fetch(webhookUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-                mode: 'no-cors' // Add this to handle CORS issues
-            })
-            .then(response => {
-                console.log('Webhook response received', response);
-                // After successful webhook submission, redirect to thank you page
-                window.location.href = './thank-you.html';
-            })
-            .catch(error => {
-                console.error('Error sending webhook notification:', error);
-                // Still redirect even if webhook fails
-                window.location.href = './thank-you.html';
-            });
-        }
-
-        // IMPROVED: Code to detect successful payment and get customer email
+        // Code pour détecter un paiement réussi et rediriger l'utilisateur
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('Page loaded, setting up Stripe listeners');
-            
-            // Check if arriving from a Stripe redirect after payment
+            // Vérifier si on arrive d'une redirection après paiement Stripe
             const urlParams = new URLSearchParams(window.location.search);
             const paymentStatus = urlParams.get('payment_status');
             
+            // Si le paramètre d'URL indique un paiement réussi
             if (paymentStatus === 'success') {
-                console.log('Payment success detected from URL params');
-                const customerEmail = urlParams.get('customer_email');
-                sendToWebhook(customerEmail);
-                return;
+                // Rediriger vers la page de confirmation
+                window.location.href = './thank-you.html';
             }
             
-            // Listen for Stripe buy button events
-            window.addEventListener('message', function(event) {
-                console.log('Message event received:', event.data);
-                
-                // Check for Stripe success event
-                if (event.data && typeof event.data === 'object') {
-                    console.log('Processing event data type:', event.data.type);
-                    
-                    // Match different possible event types from Stripe
-                    if (
-                        event.data.type === 'buy-button:success' || 
-                        event.data.type === 'buy-button:completed' ||
-                        event.data.type === 'stripe-buy-button:success'
-                    ) {
-                        console.log('Payment success event detected!');
-                        
-                        // Try to extract email from different possible locations
-                        let customerEmail = '';
-                        
-                        if (event.data.payload) {
-                            if (event.data.payload.customer && event.data.payload.customer.email) {
-                                customerEmail = event.data.payload.customer.email;
-                            } else if (event.data.payload.checkout && event.data.payload.checkout.customer_email) {
-                                customerEmail = event.data.payload.checkout.customer_email;
-                            }
-                        } else if (event.data.customer && event.data.customer.email) {
-                            customerEmail = event.data.customer.email;
-                        }
-                        
-                        console.log('Found customer email:', customerEmail);
-                        sendToWebhook(customerEmail);
-                    }
+            // Écouter les événements du bouton Stripe
+            // Cette partie détecte quand un paiement est complété sur la page
+            window.addEventListener('message', function(ev) {
+                // Vérifier si le message vient de Stripe
+                if (ev.data && typeof ev.data === 'object' && ev.data.type === 'buy-button:success') {
+                    // Rediriger vers la page de confirmation après un court délai
+                    setTimeout(function() {
+                        window.location.href = './thank-you.html';
+                    }, 1000);
                 }
             }, false);
-            
-            // IMPROVED: Add direct listener to Stripe component when it loads
-            let checkCount = 0;
-            const maxChecks = 20;
-            
-            const checkForStripeButton = setInterval(() => {
-                const stripeButton = document.querySelector('stripe-buy-button');
-                checkCount++;
-                
-                if (stripeButton || checkCount >= maxChecks) {
-                    clearInterval(checkForStripeButton);
-                    
-                    if (stripeButton) {
-                        console.log('Stripe button found, adding listeners');
-                        
-                        // Listen for Stripe button click
-                        stripeButton.addEventListener('click', function() {
-                            console.log('Stripe button clicked');
-                        });
-                        
-                        // Try to access stripe buy button's shadow DOM
-                        setTimeout(() => {
-                            try {
-                                // Monitor form submission (might not work due to Shadow DOM restrictions)
-                                const shadowRoot = stripeButton.shadowRoot;
-                                if (shadowRoot) {
-                                    const form = shadowRoot.querySelector('form');
-                                    if (form) {
-                                        console.log('Found Stripe form, adding submit listener');
-                                        form.addEventListener('submit', function(e) {
-                                            console.log('Stripe form submitted');
-                                        });
-                                    }
-                                }
-                            } catch (err) {
-                                console.log('Could not access Stripe button shadow DOM:', err);
-                            }
-                        }, 2000);
-                    } else {
-                        console.log('Stripe button not found after max checks');
-                    }
-                }
-            }, 500);
-            
-            // FALLBACK: Listen for redirect from Stripe
-            // This creates a safeguard that will execute even if the message event listeners don't work
-            function checkForStripeRedirect() {
-                const currentUrl = window.location.href;
-                console.log('Checking URL for Stripe redirect indicators:', currentUrl);
-                
-                if (currentUrl.includes('checkout.stripe.com') || 
-                    currentUrl.includes('stripe_payment=success')) {
-                    console.log('Detected return from Stripe');
-                    // Fallback without email
-                    sendToWebhook();
-                }
-            }
-            
-            // Check URL on page load and on changes
-            checkForStripeRedirect();
-            
-            // Add listener for history changes (back button, etc.)
-            window.addEventListener('popstate', checkForStripeRedirect);
         });
     </script>
 </body>
