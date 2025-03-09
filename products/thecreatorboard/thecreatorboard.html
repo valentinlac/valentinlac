@@ -345,6 +345,7 @@
             .mobile-order-4 { order: 4; }
             .mobile-order-5 { order: 5; }
             .mobile-order-6 { order: 6; }
+            .mobile-order-7 { order: 7; }
         }
     </style>
 </head>
@@ -403,18 +404,20 @@
             </div>
             
             <div class="product-info mobile-order">
-                <!-- Titre du produit -->
-                <h1 class="product-title mobile-order-2">The Creator <span class="text-accent">Board</span></h1>
+                <!-- Ordre recomposé: image (déjà en place), nom, prix, bouton, features, avis, description -->
                 
-                <!-- Prix -->
-                <div class="product-price-container mobile-order-3">
+                <!-- 1. Titre du produit -->
+                <h1 class="product-title mobile-order-1">The Creator <span class="text-accent">Board</span></h1>
+                
+                <!-- 2. Prix -->
+                <div class="product-price-container mobile-order-2">
                     <span class="old-price">35€</span>
                     <span class="product-price">20€</span>
                     <span class="discount">-45%</span>
                 </div>
                 
-                <!-- Bouton d'achat juste après le prix -->
-                <div class="stripe-buy-button-container mobile-order-4">
+                <!-- 3. Bouton d'achat -->
+                <div class="stripe-buy-button-container mobile-order-3">
                     <script async src="https://js.stripe.com/v3/buy-button.js"></script>
                     <stripe-buy-button
                         buy-button-id="buy_btn_1R0UahJIQHAmGvqdiJ7uoRsQ"
@@ -422,8 +425,8 @@
                     </stripe-buy-button>
                 </div>
                 
-                <!-- Fonctionnalités du produit -->
-                <div class="product-features mobile-order-5">
+                <!-- 4. Fonctionnalités du produit -->
+                <div class="product-features mobile-order-4">
                     <h3 class="features-title">This template includes :</h3>
                     <ul class="features-list">
                         <li class="feature-item">
@@ -451,8 +454,8 @@
                     </ul>
                 </div>
                 
-                <!-- Témoignages (déplacés ici) -->
-                <div class="mini-testimonials mobile-order-6">
+                <!-- 5. Témoignages -->
+                <div class="mini-testimonials mobile-order-5">
                     <div class="mini-testimonial">
                         <p class="mini-testimonial-text">"This template has completely transformed the way I create content. I'm so much more organised now!"</p>
                         <p class="mini-testimonial-author">- Khaled</p>
@@ -474,8 +477,8 @@
                     </div>
                 </div>
                 
-                <!-- Description du produit -->
-                <div class="product-description mobile-order-7">
+                <!-- 6. Description du produit (maintenant en dernier) -->
+                <div class="product-description mobile-order-6">
                     <p>The Creator Board is a comprehensive Notion template designed specifically for content creators. Optimise your workflow, plan your content and track your performance - all in one place.</p>
                     <br>
                     <p>This all-in-one solution means you can spend less time organising and more time creating content that will grow your audience.</p>
