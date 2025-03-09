@@ -478,7 +478,7 @@
         const prevBtn = document.querySelector('.gallery-arrow-left');
         const nextBtn = document.querySelector('.gallery-arrow-right');
         
-        // Masquer tous les slides sauf le premier
+        // Hide all slides except the first one
         slides.forEach((slide, index) => {
             if (index !== 0) {
                 slide.style.display = 'none';
@@ -495,12 +495,12 @@
                 slideIndex = 0;
             }
             
-            // Masquer tous les slides
+            // Hide all slides
             slides.forEach(slide => {
                 slide.style.display = 'none';
             });
             
-            // Afficher seulement le slide actuel
+            // Show only the current slide
             slides[slideIndex].style.display = 'flex';
             
             // Update dots
@@ -542,124 +542,155 @@
             }, 5000);
         });
 
-        // Fonction pour envoyer les données du client au webhook
+        // Function to send customer data to webhook - IMPROVED
         function sendToWebhook(email) {
-            const webhookUrl = 'https://hook.eu2.make.com/65klv76a8gno639q3feuga4p6oniwdx4';
+            // UPDATED WEBHOOK URL with correct format
+            const webhookUrl = 'https://65klv76a8gno639q3feuga4p6oniwdx4@hook.eu2.make.com';
             
-            // Créer les données à envoyer
+            // Create data to send
             const data = {
-                customer_email: email,
+                customer_email: email || 'unknown@email.com',
                 product: 'The Creator Board',
                 purchase_date: new Date().toISOString(),
                 price: '20€',
                 product_id: 'creator-board-template'
             };
             
-            // Envoyer les données au webhook via fetch
+            console.log('Sending webhook data:', data);
+            
+            // Send data to webhook via fetch
             fetch(webhookUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify(data),
+                mode: 'no-cors' // Add this to handle CORS issues
             })
             .then(response => {
-                if (response.ok) {
-                    console.log('Webhook notification sent successfully');
-                } else {
-                    console.error('Failed to send webhook notification');
-                }
+                console.log('Webhook response received', response);
+                // After successful webhook submission, redirect to thank you page
+                window.location.href = './thank-you.html';
             })
             .catch(error => {
                 console.error('Error sending webhook notification:', error);
+                // Still redirect even if webhook fails
+                window.location.href = './thank-you.html';
             });
         }
 
-        // Code pour détecter un paiement réussi et récupérer l'email du client
+        // IMPROVED: Code to detect successful payment and get customer email
         document.addEventListener('DOMContentLoaded', function() {
-            // Vérifier si on arrive d'une redirection après paiement Stripe
+            console.log('Page loaded, setting up Stripe listeners');
+            
+            // Check if arriving from a Stripe redirect after payment
             const urlParams = new URLSearchParams(window.location.search);
             const paymentStatus = urlParams.get('payment_status');
             
-            // Si le paramètre d'URL indique un paiement réussi
             if (paymentStatus === 'success') {
-                // On récupère l'email s'il est présent dans les paramètres URL
+                console.log('Payment success detected from URL params');
                 const customerEmail = urlParams.get('customer_email');
-                
-                // Envoyer les données au webhook
-                if (customerEmail) {
-                    sendToWebhook(customerEmail);
-                }
-                
-                // Rediriger vers la page de confirmation
-                window.location.href = './thank-you.html';
+                sendToWebhook(customerEmail);
+                return;
             }
             
-            // Écouter les événements du bouton Stripe
-            window.addEventListener('message', function(ev) {
-                // Vérifier si le message vient de Stripe
-                if (ev.data && typeof ev.data === 'object' && ev.data.type === 'buy-button:success') {
-                    console.log('Payment successful, event data:', ev.data);
+            // Listen for Stripe buy button events
+            window.addEventListener('message', function(event) {
+                console.log('Message event received:', event.data);
+                
+                // Check for Stripe success event
+                if (event.data && typeof event.data === 'object') {
+                    console.log('Processing event data type:', event.data.type);
                     
-                    // Essayer de récupérer l'email du client depuis l'événement Stripe
-                    let customerEmail = '';
-                    
-                    // Si l'événement contient les données du client
-                    if (ev.data.payload && ev.data.payload.customer && ev.data.payload.customer.email) {
-                        customerEmail = ev.data.payload.customer.email;
-                    } else if (ev.data.customer && ev.data.customer.email) {
-                        customerEmail = ev.data.customer.email;
-                    }
-                    
-                    // Enregistrer l'email pour le debuggage
-                    console.log('Customer email:', customerEmail);
-                    
-                    // Envoyer les données au webhook si l'email est disponible
-                    if (customerEmail) {
+                    // Match different possible event types from Stripe
+                    if (
+                        event.data.type === 'buy-button:success' || 
+                        event.data.type === 'buy-button:completed' ||
+                        event.data.type === 'stripe-buy-button:success'
+                    ) {
+                        console.log('Payment success event detected!');
+                        
+                        // Try to extract email from different possible locations
+                        let customerEmail = '';
+                        
+                        if (event.data.payload) {
+                            if (event.data.payload.customer && event.data.payload.customer.email) {
+                                customerEmail = event.data.payload.customer.email;
+                            } else if (event.data.payload.checkout && event.data.payload.checkout.customer_email) {
+                                customerEmail = event.data.payload.checkout.customer_email;
+                            }
+                        } else if (event.data.customer && event.data.customer.email) {
+                            customerEmail = event.data.customer.email;
+                        }
+                        
+                        console.log('Found customer email:', customerEmail);
                         sendToWebhook(customerEmail);
-                    } else {
-                        console.warn('Customer email not found in payment data');
                     }
-                    
-                    // Rediriger vers la page de confirmation après un court délai
-                    setTimeout(function() {
-                        window.location.href = './thank-you.html';
-                    }, 1500);
                 }
             }, false);
             
-            // Solution alternative: ajouter un écouteur d'événement au formulaire Stripe
-            // Cela peut nécessiter un délai pour s'assurer que le composant est chargé
-            setTimeout(function() {
-                // Observer les mutations du DOM pour détecter quand le formulaire Stripe est injecté
-                const observer = new MutationObserver((mutations) => {
-                    mutations.forEach((mutation) => {
-                        if (mutation.addedNodes.length) {
-                            const stripeForm = document.querySelector('iframe[name^="stripe-buy-button-"]');
-                            if (stripeForm) {
-                                console.log('Stripe form detected');
-                                
-                                // Essayer de capturer l'email du formulaire Stripe lorsqu'il est soumis
-                                // Note: Ceci peut être limité par les restrictions de sécurité des iframes
-                                try {
-                                    const stripeButton = document.querySelector('stripe-buy-button');
-                                    if (stripeButton) {
-                                        stripeButton.addEventListener('click', function() {
-                                            console.log('Stripe button clicked');
+            // IMPROVED: Add direct listener to Stripe component when it loads
+            let checkCount = 0;
+            const maxChecks = 20;
+            
+            const checkForStripeButton = setInterval(() => {
+                const stripeButton = document.querySelector('stripe-buy-button');
+                checkCount++;
+                
+                if (stripeButton || checkCount >= maxChecks) {
+                    clearInterval(checkForStripeButton);
+                    
+                    if (stripeButton) {
+                        console.log('Stripe button found, adding listeners');
+                        
+                        // Listen for Stripe button click
+                        stripeButton.addEventListener('click', function() {
+                            console.log('Stripe button clicked');
+                        });
+                        
+                        // Try to access stripe buy button's shadow DOM
+                        setTimeout(() => {
+                            try {
+                                // Monitor form submission (might not work due to Shadow DOM restrictions)
+                                const shadowRoot = stripeButton.shadowRoot;
+                                if (shadowRoot) {
+                                    const form = shadowRoot.querySelector('form');
+                                    if (form) {
+                                        console.log('Found Stripe form, adding submit listener');
+                                        form.addEventListener('submit', function(e) {
+                                            console.log('Stripe form submitted');
                                         });
                                     }
-                                } catch (e) {
-                                    console.error('Error setting up Stripe form listener:', e);
                                 }
-                                
-                                observer.disconnect();
+                            } catch (err) {
+                                console.log('Could not access Stripe button shadow DOM:', err);
                             }
-                        }
-                    });
-                });
+                        }, 2000);
+                    } else {
+                        console.log('Stripe button not found after max checks');
+                    }
+                }
+            }, 500);
+            
+            // FALLBACK: Listen for redirect from Stripe
+            // This creates a safeguard that will execute even if the message event listeners don't work
+            function checkForStripeRedirect() {
+                const currentUrl = window.location.href;
+                console.log('Checking URL for Stripe redirect indicators:', currentUrl);
                 
-                observer.observe(document.body, { childList: true, subtree: true });
-            }, 1000);
+                if (currentUrl.includes('checkout.stripe.com') || 
+                    currentUrl.includes('stripe_payment=success')) {
+                    console.log('Detected return from Stripe');
+                    // Fallback without email
+                    sendToWebhook();
+                }
+            }
+            
+            // Check URL on page load and on changes
+            checkForStripeRedirect();
+            
+            // Add listener for history changes (back button, etc.)
+            window.addEventListener('popstate', checkForStripeRedirect);
         });
     </script>
 </body>
