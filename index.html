@@ -317,9 +317,55 @@ body {
         max-width: 400px;
     }
 
+    /* Modifications pour la version mobile de la timeline */
+    .timeline-line {
+        display: none; /* Masquer la ligne */
+    }
+
+    .timeline-container {
+        min-height: auto;
+        padding: 2rem 0;
+    }
+
+    .timeline-item {
+        margin: 3rem 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .timeline-item:nth-child(3) .timeline-content {
+        margin-left: 0;
+        text-align: center;
+    }
+
+    .timeline-item:first-child .timeline-content {
+        margin-left: 0;
+        margin-right: 0;
+        text-align: center;
+        left: 0;
+    }
+
+    .sticky-wrapper {
+        position: static;
+        transform: none;
+        height: auto;
+        width: 100%;
+        margin-bottom: 1.5rem;
+    }
+
+    .timeline-button {
+        position: static;
+        transform: none;
+        display: block;
+        margin: 0 auto 1.5rem auto;
+    }
+
     .timeline-content {
-        width: 80%;
-        margin-left: 20%;
+        width: 90%;
+        margin: 0 auto;
+        text-align: center;
+        padding: 0;
     }
 }
     </style>
@@ -449,70 +495,111 @@ body {
         });
     
         function updateTimeline() {
-    const windowHeight = window.innerHeight;
-    const scrollY = window.scrollY;
-    
-    timelineItems.forEach((item, index) => {
-        const button = item.querySelector('.timeline-button');
-        const itemRect = item.getBoundingClientRect();
-        const nextItem = timelineItems[index + 1];
-        
-        const viewportCenter = windowHeight / 2;
-        const relativeToCenter = itemRect.top + (itemRect.height / 2) - viewportCenter;
-        const shouldBeFixed = Math.abs(relativeToCenter) < windowHeight * 0.3;
-        
-        if (shouldBeFixed) {
-            if (nextItem) {
-                const nextRect = nextItem.getBoundingClientRect();
-                const distanceToNext = nextRect.top - viewportCenter;
-                
-                // Modifier la valeur TRANSITION_OFFSET pour le dernier bouton
-                const currentOffset = index === timelineItems.length - 2 ? TRANSITION_OFFSET * 1.5 : TRANSITION_OFFSET;
-                
-                if (distanceToNext < currentOffset) {
-                    const progress = Math.max(0, Math.min(1, 
-                        (currentOffset - distanceToNext) / currentOffset
-                    ));
-                    
-                    const startY = viewportCenter;
-                    const endY = itemRect.bottom;
-                    
-                    // Réduire la distance de transition pour le dernier bouton
-                    const translateY = index === timelineItems.length - 2 ? 
-                        -progress * 30 : // Réduit de 50 à 30 pour le bouton Newsletter
-                        -progress * 50;
-                    
-                    const currentY = startY + (endY - startY) * progress;
-                    
-                    button.style.position = 'absolute';
-                    button.style.top = `${currentY}px`;
-                    button.style.transform = `translate(-50%, -50%) translateY(${translateY}px)`;
-                } else {
-                    button.style.position = 'fixed';
-                    button.style.top = '50%';
-                    button.style.transform = 'translate(-50%, -50%)';
-                }
-            } else {
-                button.style.position = 'fixed';
-                button.style.top = '50%';
-                button.style.transform = 'translate(-50%, -50%)';
-            }
-        } else {
-            const pastCenter = itemRect.top + itemRect.height / 2 < viewportCenter;
-            button.style.position = 'absolute';
+            const windowHeight = window.innerHeight;
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            const timelineLine = document.querySelector('.timeline-line');
             
-            if (pastCenter) {
-                button.style.top = '100%';
-                button.style.transform = 'translate(-50%, -100%)';
-            } else {
-                button.style.top = '0';
-                button.style.transform = 'translateX(-50%)';
+            // Skip timeline updates on mobile
+            if (window.innerWidth <= 767) return;
+            
+            // Approche simplifiée pour éviter les bugs de positionnement
+            timelineItems.forEach((item, index) => {
+                const button = item.querySelector('.timeline-button');
+                const itemRect = item.getBoundingClientRect();
+                const viewportCenter = windowHeight / 2;
+                
+                // Détecter si l'élément est proche du centre de l'écran
+                const distanceFromCenter = Math.abs((itemRect.top + itemRect.height/2) - viewportCenter);
+                const isNearCenter = distanceFromCenter < windowHeight * 0.3;
+                
+                // Obtenir la position du bouton précédent si applicable
+                let prevButtonBottom = -Infinity;
+                if (index > 0) {
+                    const prevButton = timelineItems[index-1].querySelector('.timeline-button');
+                    if (prevButton.style.position === 'fixed') {
+                        prevButtonBottom = prevButton.getBoundingClientRect().bottom;
+                    }
+                }
+                
+                // Position du prochain bouton si applicable
+                let nextButtonTop = Infinity;
+                if (index < timelineItems.length - 1) {
+                    const nextButton = timelineItems[index+1].querySelector('.timeline-button');
+                    nextButtonTop = nextButton.getBoundingClientRect().top;
+                }
+                
+                if (isNearCenter) {
+                    // Seulement fixer le bouton s'il n'y a pas de conflit avec d'autres boutons
+                    const buttonHeight = button.offsetHeight;
+                    const wouldOverlap = (viewportCenter + buttonHeight/2) > nextButtonTop - 20 || 
+                                        (viewportCenter - buttonHeight/2) < prevButtonBottom + 20;
+                    
+                    if (!wouldOverlap) {
+                        // Fixer le bouton au centre
+                        button.style.position = 'fixed';
+                        button.style.top = '50%';
+                        button.style.left = '50%';
+                        button.style.transform = 'translate(-50%, -50%)';
+                    } else {
+                        // Éviter le chevauchement en maintenant une position absolue
+                        button.style.position = 'absolute';
+                        
+                        if ((itemRect.top + itemRect.height/2) < viewportCenter) {
+                            // L'élément est au-dessus, placer le bouton en bas
+                            button.style.top = '100%';
+                            button.style.transform = 'translate(-50%, -100%)';
+                        } else {
+                            // L'élément est en-dessous, placer le bouton en haut
+                            button.style.top = '0';
+                            button.style.transform = 'translateX(-50%)';
+                        }
+                    }
+                } else {
+                    // Loin du centre, position absolue
+                    button.style.position = 'absolute';
+                    
+                    if ((itemRect.top + itemRect.height/2) < viewportCenter) {
+                        // Au-dessus du viewport
+                        button.style.top = '100%';
+                        button.style.transform = 'translate(-50%, -100%)';
+                    } else {
+                        // En-dessous du viewport
+                        button.style.top = '0';
+                        button.style.transform = 'translateX(-50%)';
+                    }
+                }
+                
+                // Toujours aligner horizontalement sur la timeline
+                button.style.left = '50%';
+            });
+            
+            // Deuxième passe pour éviter les déplacements brusques
+            // Vérifier les transitions entre état fixe et absolu
+            for (let i = 0; i < timelineItems.length - 1; i++) {
+                const currentButton = timelineItems[i].querySelector('.timeline-button');
+                const nextButton = timelineItems[i+1].querySelector('.timeline-button');
+                
+                if (currentButton.style.position === 'fixed' && nextButton.style.position === 'fixed') {
+                    // Éviter d'avoir deux boutons fixés en même temps
+                    const currentRect = currentButton.getBoundingClientRect();
+                    const nextRect = nextButton.getBoundingClientRect();
+                    
+                    if (nextRect.top - currentRect.bottom < 40) {
+                        // Si les boutons sont trop proches, rendre le prochain absolu
+                        nextButton.style.position = 'absolute';
+                        nextButton.style.top = '0';
+                        nextButton.style.transform = 'translateX(-50%)';
+                    }
+                }
             }
         }
+
+        // Add event listeners for the timeline
+        window.addEventListener('scroll', updateTimeline);
+        window.addEventListener('resize', updateTimeline);
         
-        button.style.left = '50%';
-    });
-}
+        // Initial update
+        document.addEventListener('DOMContentLoaded', updateTimeline);
     </script>
     </body>
     </html>
