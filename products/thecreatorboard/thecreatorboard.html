@@ -60,6 +60,18 @@
         .product-container {
             max-width: 1200px;
             margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-top {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .product-bottom {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 3rem;
@@ -284,7 +296,12 @@
         
         /* Media queries */
         @media screen and (max-width: 992px) {
+            .product-top, .product-bottom {
+                grid-template-columns: 1fr;
+            }
+
             .product-container {
+                display: grid;
                 grid-template-columns: 1fr;
             }
 
@@ -298,6 +315,17 @@
         }
 
         @media screen and (max-width: 767px) {
+            /* Hide desktop layout completely */
+            .product-top, .product-bottom {
+                display: none;
+            }
+            
+            /* Show mobile layout */
+            .mobile-product-container {
+                display: grid;
+                grid-template-columns: 1fr;
+            }
+            
             .nav-bar {
                 padding: 1rem;
                 margin-right: 0;
@@ -356,8 +384,8 @@
     </nav>
 
     <main class="product-section">
-        <div class="product-container">
-            <!-- Galerie d'images -->
+        <!-- Version mobile (cachée sur desktop) -->
+        <div class="mobile-product-container" style="display: none;">
             <div class="product-gallery">
                 <div class="gallery-wrapper">
                     <button class="gallery-arrow gallery-arrow-left">
@@ -485,78 +513,245 @@
                 </div>
             </div>
         </div>
+
+        <!-- Version desktop (nouvelle organisation) -->
+        <div class="product-container">
+            <!-- Section du haut: Image et Infos principales côte à côte -->
+            <div class="product-top">
+                <!-- Galerie d'images à gauche -->
+                <div class="product-gallery">
+                    <div class="gallery-wrapper">
+                        <button class="gallery-arrow gallery-arrow-left">
+                            <svg class="arrow-icon" viewBox="0 0 24 24">
+                                <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                            </svg>
+                        </button>
+                        <button class="gallery-arrow gallery-arrow-right">
+                            <svg class="arrow-icon" viewBox="0 0 24 24">
+                                <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                            </svg>
+                        </button>
+                        
+                        <div class="gallery-container">
+                            <div class="gallery-slide">
+                                <img src="1.png" alt="The Creator Board - Dashboard" class="gallery-image">
+                            </div>
+                            <div class="gallery-slide">
+                                <img src="2.png" alt="The Creator Board - Content Planning" class="gallery-image">
+                            </div>
+                            <div class="gallery-slide">
+                                <img src="3.png" alt="The Creator Board - Analytics" class="gallery-image">
+                            </div>
+                            <div class="gallery-slide">
+                                <img src="4.png" alt="The Creator Board - Ideas Bank" class="gallery-image">
+                            </div>
+                            <div class="gallery-slide">
+                                <img src="5.png" alt="The Creator Board - Weekly Planner" class="gallery-image">
+                            </div>
+                            <div class="gallery-slide">
+                                <img src="6.png" alt="The Creator Board - Collaboration System" class="gallery-image">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="gallery-nav">
+                        <div class="gallery-dot active"></div>
+                        <div class="gallery-dot"></div>
+                        <div class="gallery-dot"></div>
+                        <div class="gallery-dot"></div>
+                        <div class="gallery-dot"></div>
+                        <div class="gallery-dot"></div>
+                    </div>
+                    
+                    <!-- Témoignages sous la galerie -->
+                    <div class="mini-testimonials">
+                        <div class="mini-testimonial">
+                            <p class="mini-testimonial-text">"This template has completely transformed the way I create content. I'm so much more organised now!"</p>
+                            <p class="mini-testimonial-author">- Khaled</p>
+                        </div>
+                        
+                        <div class="mini-testimonial">
+                            <p class="mini-testimonial-text">"I save at least 3 hours a week thanks to these organisational tools."</p>
+                            <p class="mini-testimonial-author">- Luis</p>
+                        </div>
+                        
+                        <div class="mini-testimonial">
+                            <p class="mini-testimonial-text">"It's a small investment, but it's a really interesting one - I'd recommend it!"</p>
+                            <p class="mini-testimonial-author">- Robin</p>
+                        </div>
+                        
+                        <div class="mini-testimonial">
+                            <p class="mini-testimonial-text">"I love the brainstorm feature, it's really helped me with my projects." </p>
+                            <p class="mini-testimonial-author">- Miriam</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Infos à droite -->
+                <div class="product-info">
+                    <!-- 1. Titre du produit -->
+                    <h1 class="product-title">The Creator <span class="text-accent">Board</span></h1>
+                    
+                    <!-- 2. Prix -->
+                    <div class="product-price-container">
+                        <span class="old-price">35€</span>
+                        <span class="product-price">20€</span>
+                        <span class="discount">-45%</span>
+                    </div>
+                    
+                    <!-- 3. Bouton d'achat -->
+                    <div class="stripe-buy-button-container">
+                        <script async src="https://js.stripe.com/v3/buy-button.js"></script>
+                        <stripe-buy-button
+                            buy-button-id="buy_btn_1R0UahJIQHAmGvqdiJ7uoRsQ"
+                            publishable-key="pk_live_51R0TDeJIQHAmGvqdBamUDTu0jJEGwGIaCbnmSlK2Yd7Sld6F9AmTRYQzTov4LaHi09kIVvOyZCS1ucntNLBScLyg00zADG7Cmb">
+                        </stripe-buy-button>
+                    </div>
+                    
+                    <!-- 4. Fonctionnalités du produit -->
+                    <div class="product-features">
+                        <h3 class="features-title">This template includes :</h3>
+                        <ul class="features-list">
+                            <li class="feature-item">
+                                <span class="feature-icon">✓</span> Brainstorm embed (LucidChart)
+                            </li>
+                            <li class="feature-item">
+                                <span class="feature-icon">✓</span> Managing / Tracking Content
+                            </li>
+                            <li class="feature-item">
+                                <span class="feature-icon">✓</span> Daily to-do list
+                            </li>
+                            <li class="feature-item">
+                                <span class="feature-icon">✓</span> Content / Everyday life planner
+                            </li>
+                            <li class="feature-item">
+                                <span class="feature-icon">✓</span> Shotlist
+                            </li>
+                            <li class="feature-item">
+                                <span class="feature-icon">✓</span> Project Managment
+                            </li>
+                            <li class="feature-item">
+                                <span class="feature-icon">✓</span> Lifetime access and free updates
+                            </li>
+                            <p> And many other features</p>
+                        </ul>
+                    </div>
+                    
+                    <!-- 6. Description du produit (en dernier) -->
+                    <div class="product-description">
+                        <p>The Creator Board is a comprehensive Notion template designed specifically for content creators. Optimise your workflow, plan your content and track your performance - all in one place.</p>
+                        <br>
+                        <p>This all-in-one solution means you can spend less time organising and more time creating content that will grow your audience.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
     <script>
-        // Carousel functionality
-        const galleryContainer = document.querySelector('.gallery-container');
-        const slides = document.querySelectorAll('.gallery-slide');
-        const dots = document.querySelectorAll('.gallery-dot');
-        const prevBtn = document.querySelector('.gallery-arrow-left');
-        const nextBtn = document.querySelector('.gallery-arrow-right');
-        
-        // Masquer tous les slides sauf le premier
-        slides.forEach((slide, index) => {
-            if (index !== 0) {
-                slide.style.display = 'none';
-            }
-        });
-        
-        let currentSlide = 0;
-        const slideCount = slides.length;
-        
-        function goToSlide(slideIndex) {
-            if (slideIndex < 0) {
-                slideIndex = slideCount - 1;
-            } else if (slideIndex >= slideCount) {
-                slideIndex = 0;
-            }
-            
-            // Masquer tous les slides
-            slides.forEach(slide => {
-                slide.style.display = 'none';
-            });
-            
-            // Afficher seulement le slide actuel
-            slides[slideIndex].style.display = 'flex';
-            
-            // Update dots
-            dots.forEach(dot => dot.classList.remove('active'));
-            dots[slideIndex].classList.add('active');
-            
-            currentSlide = slideIndex;
+        // Fonction pour détecter si l'appareil est mobile
+        function isMobile() {
+            return window.innerWidth <= 767;
         }
-        
-        // Set up event listeners
-        prevBtn.addEventListener('click', () => {
-            goToSlide(currentSlide - 1);
-        });
-        
-        nextBtn.addEventListener('click', () => {
-            goToSlide(currentSlide + 1);
-        });
-        
-        dots.forEach((dot, index) => {
-            dot.addEventListener('click', () => {
-                goToSlide(index);
-            });
-        });
-        
-        // Auto advance slides
-        let slideInterval = setInterval(() => {
-            goToSlide(currentSlide + 1);
-        }, 5000);
-        
-        // Pause auto advance on hover
-        const productGallery = document.querySelector('.product-gallery');
-        productGallery.addEventListener('mouseenter', () => {
-            clearInterval(slideInterval);
-        });
-        
-        productGallery.addEventListener('mouseleave', () => {
-            slideInterval = setInterval(() => {
-                goToSlide(currentSlide + 1);
-            }, 5000);
+
+        // Fonction pour afficher la bonne version selon l'appareil
+        function displayCorrectVersion() {
+            const mobileContainer = document.querySelector('.mobile-product-container');
+            const desktopContainer = document.querySelector('.product-container');
+            
+            if (isMobile()) {
+                mobileContainer.style.display = 'block';
+                desktopContainer.style.display = 'none';
+            } else {
+                mobileContainer.style.display = 'none';
+                desktopContainer.style.display = 'block';
+            }
+        }
+
+        // Exécuter au chargement et au redimensionnement
+        window.addEventListener('load', displayCorrectVersion);
+        window.addEventListener('resize', displayCorrectVersion);
+
+        // Carousel functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialiser les carousels (mobile et desktop)
+            initCarousel('.product-container');
+            initCarousel('.mobile-product-container');
+            
+            // Fonction pour initialiser le carousel
+            function initCarousel(containerSelector) {
+                const container = document.querySelector(containerSelector);
+                if (!container) return;
+                
+                const slides = container.querySelectorAll('.gallery-slide');
+                const dots = container.querySelectorAll('.gallery-dot');
+                const prevBtn = container.querySelector('.gallery-arrow-left');
+                const nextBtn = container.querySelector('.gallery-arrow-right');
+                
+                // Masquer tous les slides sauf le premier
+                slides.forEach((slide, index) => {
+                    if (index !== 0) {
+                        slide.style.display = 'none';
+                    }
+                });
+                
+                let currentSlide = 0;
+                const slideCount = slides.length;
+                
+                function goToSlide(slideIndex) {
+                    if (slideIndex < 0) {
+                        slideIndex = slideCount - 1;
+                    } else if (slideIndex >= slideCount) {
+                        slideIndex = 0;
+                    }
+                    
+                    // Masquer tous les slides
+                    slides.forEach(slide => {
+                        slide.style.display = 'none';
+                    });
+                    
+                    // Afficher seulement le slide actuel
+                    slides[slideIndex].style.display = 'flex';
+                    
+                    // Update dots
+                    dots.forEach(dot => dot.classList.remove('active'));
+                    dots[slideIndex].classList.add('active');
+                    
+                    currentSlide = slideIndex;
+                }
+                
+                // Set up event listeners
+                prevBtn.addEventListener('click', () => {
+                    goToSlide(currentSlide - 1);
+                });
+                
+                nextBtn.addEventListener('click', () => {
+                    goToSlide(currentSlide + 1);
+                });
+                
+                dots.forEach((dot, index) => {
+                    dot.addEventListener('click', () => {
+                        goToSlide(index);
+                    });
+                });
+                
+                // Auto advance slides
+                let slideInterval = setInterval(() => {
+                    goToSlide(currentSlide + 1);
+                }, 5000);
+                
+                // Pause auto advance on hover
+                const productGallery = container.querySelector('.product-gallery');
+                productGallery.addEventListener('mouseenter', () => {
+                    clearInterval(slideInterval);
+                });
+                
+                productGallery.addEventListener('mouseleave', () => {
+                    slideInterval = setInterval(() => {
+                        goToSlide(currentSlide + 1);
+                    }, 5000);
+                });
+            }
         });
 
         // Code pour détecter un paiement réussi et rediriger l'utilisateur
