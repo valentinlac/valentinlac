@@ -458,15 +458,13 @@
                 
                 <!-- Bouton Stripe avec écoute de l'événement de paiement -->
                 <div class="stripe-buy-button-container">
-                    <<script async
-  src="https://js.stripe.com/v3/buy-button.js">
-</script>
+                    <script async src="https://js.stripe.com/v3/buy-button.js"></script>
 
-<stripe-buy-button
-  buy-button-id="buy_btn_1R0Vo7JIQHAmGvqdunDsYuCG"
-  publishable-key="pk_test_51R0TDeJIQHAmGvqdB2fORbtvLF6lN866kcw5wxKwZMK8Uhh1Yc570IBBDWZvwTZ9B38wDwkCiR44LHqNs92YthOW00pKXSJmAo"
->
-</stripe-buy-button>
+                    <stripe-buy-button
+                      buy-button-id="buy_btn_1R0Vo7JIQHAmGvqdunDsYuCG"
+                      publishable-key="pk_test_51R0TDeJIQHAmGvqdB2fORbtvLF6lN866kcw5wxKwZMK8Uhh1Yc570IBBDWZvwTZ9B38wDwkCiR44LHqNs92YthOW00pKXSJmAo"
+                    >
+                    </stripe-buy-button>
                 </div>
             </div>
         </div>
@@ -544,7 +542,40 @@
             }, 5000);
         });
 
-        // Code pour détecter un paiement réussi et rediriger l'utilisateur
+        // Fonction pour envoyer les données du client au webhook
+        function sendToWebhook(email) {
+            const webhookUrl = 'https://hook.eu2.make.com/65klv76a8gno639q3feuga4p6oniwdx4';
+            
+            // Créer les données à envoyer
+            const data = {
+                customer_email: email,
+                product: 'The Creator Board',
+                purchase_date: new Date().toISOString(),
+                price: '20€',
+                product_id: 'creator-board-template'
+            };
+            
+            // Envoyer les données au webhook via fetch
+            fetch(webhookUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Webhook notification sent successfully');
+                } else {
+                    console.error('Failed to send webhook notification');
+                }
+            })
+            .catch(error => {
+                console.error('Error sending webhook notification:', error);
+            });
+        }
+
+        // Code pour détecter un paiement réussi et récupérer l'email du client
         document.addEventListener('DOMContentLoaded', function() {
             // Vérifier si on arrive d'une redirection après paiement Stripe
             const urlParams = new URLSearchParams(window.location.search);
@@ -552,21 +583,83 @@
             
             // Si le paramètre d'URL indique un paiement réussi
             if (paymentStatus === 'success') {
+                // On récupère l'email s'il est présent dans les paramètres URL
+                const customerEmail = urlParams.get('customer_email');
+                
+                // Envoyer les données au webhook
+                if (customerEmail) {
+                    sendToWebhook(customerEmail);
+                }
+                
                 // Rediriger vers la page de confirmation
                 window.location.href = './thank-you.html';
             }
             
             // Écouter les événements du bouton Stripe
-            // Cette partie détecte quand un paiement est complété sur la page
             window.addEventListener('message', function(ev) {
                 // Vérifier si le message vient de Stripe
                 if (ev.data && typeof ev.data === 'object' && ev.data.type === 'buy-button:success') {
+                    console.log('Payment successful, event data:', ev.data);
+                    
+                    // Essayer de récupérer l'email du client depuis l'événement Stripe
+                    let customerEmail = '';
+                    
+                    // Si l'événement contient les données du client
+                    if (ev.data.payload && ev.data.payload.customer && ev.data.payload.customer.email) {
+                        customerEmail = ev.data.payload.customer.email;
+                    } else if (ev.data.customer && ev.data.customer.email) {
+                        customerEmail = ev.data.customer.email;
+                    }
+                    
+                    // Enregistrer l'email pour le debuggage
+                    console.log('Customer email:', customerEmail);
+                    
+                    // Envoyer les données au webhook si l'email est disponible
+                    if (customerEmail) {
+                        sendToWebhook(customerEmail);
+                    } else {
+                        console.warn('Customer email not found in payment data');
+                    }
+                    
                     // Rediriger vers la page de confirmation après un court délai
                     setTimeout(function() {
                         window.location.href = './thank-you.html';
-                    }, 1000);
+                    }, 1500);
                 }
             }, false);
+            
+            // Solution alternative: ajouter un écouteur d'événement au formulaire Stripe
+            // Cela peut nécessiter un délai pour s'assurer que le composant est chargé
+            setTimeout(function() {
+                // Observer les mutations du DOM pour détecter quand le formulaire Stripe est injecté
+                const observer = new MutationObserver((mutations) => {
+                    mutations.forEach((mutation) => {
+                        if (mutation.addedNodes.length) {
+                            const stripeForm = document.querySelector('iframe[name^="stripe-buy-button-"]');
+                            if (stripeForm) {
+                                console.log('Stripe form detected');
+                                
+                                // Essayer de capturer l'email du formulaire Stripe lorsqu'il est soumis
+                                // Note: Ceci peut être limité par les restrictions de sécurité des iframes
+                                try {
+                                    const stripeButton = document.querySelector('stripe-buy-button');
+                                    if (stripeButton) {
+                                        stripeButton.addEventListener('click', function() {
+                                            console.log('Stripe button clicked');
+                                        });
+                                    }
+                                } catch (e) {
+                                    console.error('Error setting up Stripe form listener:', e);
+                                }
+                                
+                                observer.disconnect();
+                            }
+                        }
+                    });
+                });
+                
+                observer.observe(document.body, { childList: true, subtree: true });
+            }, 1000);
         });
     </script>
 </body>
