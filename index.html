@@ -23,6 +23,7 @@
             color: var(--white);
             font-weight: 600;
             letter-spacing: -0.5px;
+            overflow-x: hidden;
         }
 
         .nav-bar {
@@ -142,7 +143,7 @@
             gap: 0.5rem;
         }
 
-        .btn .hover-effect, .timeline-button .hover-effect {
+        .btn .hover-effect {
             position: absolute;
             width: 70px;
             height: 70px;
@@ -172,15 +173,6 @@
             );
         }
 
-        .timeline-button .hover-effect {
-            background: radial-gradient(
-                circle,
-                rgba(0, 0, 0, 1) 30%,
-                rgba(0, 0, 0, 0.826) 70%,
-                rgba(0, 0, 0, 0.568) 100%
-            );
-        }
-
         .testimonial {
             text-align: right;
             align-items: right;
@@ -198,101 +190,199 @@
             font-weight: 600;
         }
 
-        .timeline-container {
-            position: relative;
-            min-height: 60vh;
-            padding: 0rem;
+        /* Section "Moi" */
+        .about-me-section {
+            padding: 0rem 2rem;
             max-width: 1200px;
             margin: 0 auto;
         }
 
-        .timeline-line {
-            position: absolute;
-            left: 50%;
-            top: 0;
-            width: 2px;
-            background-color: rgba(255, 255, 255, 0.2);
-            transform: translateX(-50%);
-            height: calc(100% - 15vh);
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            text-align: center;
+            color: var(--accent-blue);
         }
 
-        .timeline-item {
-            position: relative;
-            margin: 25vh 0;
-            min-height: 100px;
+        .about-me-container {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
         }
-        .timeline-item:nth-child(3) .timeline-content {
-            margin-left: 58%; /* Déplace le contenu vers la droite */
-            text-align: right; /* Aligne le texte à droite */
+
+        .about-me-text {
+            flex: 1;
         }
-        .timeline-button {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 1rem 2.2rem;
-            border-radius: 20px;
-            font-weight: 800;
-            text-decoration: none;
-            text-transform: uppercase;
-            transition: all 0.3s ease;
-            overflow: hidden;
-            cursor: pointer;
-            display: inline-flex;
+
+        .about-me-description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        .about-me-image {
+            flex: 1;
+            display: flex;
             justify-content: center;
             align-items: center;
-            isolation: isolate;
-            background-color: var(--accent-blue);
-            color: var(--dark-bg);
-            border: none;
-            z-index: 2;
-            min-width: 160px;
-            font-family: inherit;
-            font-size: 1rem;
-            letter-spacing: 0.1px;
         }
 
-        .timeline-content {
-            width: 35%;
-            padding: 15px;
-            margin-left: 5%;
-            margin-top: -15%;
+        .profile-image {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(189, 189, 244, 0.2);
+            transition: transform 0.3s ease;
         }
 
-        .timeline-item:first-child .timeline-content {
-            margin-left: 0;
-            margin-right: 58%;
-            text-align: right;
+        .profile-image:hover {
+            transform: scale(1.02);
+        }
+
+        /* Section "Comment je vois la vie" */
+        .life-view-section {
+            padding: 6rem 4rem;
+            background-color: rgba(0, 0, 0, 0.3);
             position: relative;
-            left: -50%;
+            overflow: hidden;
         }
 
-        .sticky-wrapper {
-            position: sticky;
-            top: 50%;
-            transform: translateY(-50%);
-            height: 0;
+        .cards-container {
+            display: flex;
+            gap: 2rem;
+            padding: 2rem 0;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            margin: 0 -4rem;
+            padding: 2rem 4rem;
+            cursor: grab;
+            white-space: nowrap;
         }
 
-        .timeline-title {
-            font-size: 2rem;
+        .cards-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .card {
+            flex: 0 0 auto;
+            width: 300px;
+            height: 250px;
+            background-color: var(--dark-bg);
+            border: 2px solid var(--accent-blue);
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 15px rgba(189, 189, 244, 0.1);
+            white-space: normal;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(189, 189, 244, 0.2);
+        }
+
+        .card-inner {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card h3 {
+            font-size: 1.4rem;
             margin-bottom: 1rem;
             color: var(--accent-blue);
         }
 
-        .timeline-description {
+        .card p {
             font-size: 1rem;
-            line-height: 1.5;
-            opacity: 0.8;
+            line-height: 1.6;
+            opacity: 0.9;
             font-weight: 400;
         }
 
-        .timeline-image {
-            width: 100%;
-            height: auto;
-            border-radius: 8px;
-            margin-top: 1rem;
+        /* Section "Mes ambitions" */
+        .ambitions-section {
+            padding: 3rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
         }
 
+        .ambitions-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .ambition-item {
+            background-color: rgba(30, 30, 30, 0.5);
+            border-radius: 15px;
+            padding: 2rem;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .ambition-item:hover {
+            transform: translateX(10px);
+        }
+
+        .ambition-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background-color: var(--accent-blue);
+            transition: width 0.3s ease;
+        }
+
+        .ambition-item:hover::before {
+            width: 8px;
+        }
+
+        .ambition-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--accent-blue);
+        }
+
+        .ambition-description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        .ambition-number {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 4rem;
+            font-weight: 800;
+            opacity: 0.1;
+            color: var(--accent-blue);
+        }
+
+        /* Animation pour les ambitions */
+        .ambition-item {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .ambition-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Mobile responsiveness */
         @media screen and (max-width: 767px) {
             .nav-bar {
                 padding: 1rem;
@@ -319,58 +409,26 @@
                 text-align: center;
             }
 
-            /* Modifications pour la version mobile de la timeline */
-            .timeline-line {
-                display: none; /* Masquer la ligne */
+            .about-me-section {
+                padding: 4rem 2rem;
             }
 
-            .timeline-container {
-                min-height: auto;
-                padding: 2rem 0;
+            .about-me-container {
+                flex-direction: column-reverse;
+                gap: 2rem;
             }
 
-            .timeline-item {
-                margin: 3rem 0;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
+            .life-view-section {
+                padding: 4rem 2rem;
             }
 
-            .timeline-item:nth-child(3) .timeline-content {
-                margin-left: 0;
-                text-align: center;
+            .cards-container {
+                margin: 0 -2rem;
+                padding: 2rem 2rem;
             }
 
-            .timeline-item:first-child .timeline-content {
-                margin-left: 0;
-                margin-right: 0;
-                text-align: center;
-                left: 0;
-            }
-
-            .sticky-wrapper {
-                position: static;
-                transform: none;
-                height: auto;
-                width: 100%;
-                margin-bottom: 1.5rem;
-            }
-
-            .timeline-button {
-                position: static;
-                transform: none;
-                display: block;
-                margin: 0 auto 1.5rem auto;
-                width: 80%;
-                max-width: 200px;
-                text-align: center;
-            }
-
-            .timeline-content {
-                width: 90%;
-                margin: 0 auto;
-                text-align: center;
-                padding: 0;
+            .ambitions-section {
+                padding: 4rem 2rem;
             }
         }
     </style>
@@ -403,69 +461,105 @@
                     <div class="hover-effect"></div>
                 </a>
             </div>
-
-            <div class="testimonial">
-                <p class="quote">"The value you get for it is insane, it's worth every penny"</p>
-                <p class="author">GEORGE, 1V1 MEETING</p>
-            </div>
         </div>
     </main>
 
-    <div class="timeline-container">
-        <div class="timeline-line"></div>
-        
-        <div class="timeline-item">
-            <div class="sticky-wrapper">
-                <a href="tools.html" class="timeline-button">
-                    <div class="hover-effect"></div>
-                    MY TOOLS
-                </a>
-            </div>
-            <div class="timeline-content">
-                <h2 class="timeline-title">All my essentials as a content creator</h2>
-                <p class="timeline-description">
-                    This page contains all the tools I use every day to edit video, manage my content and improve the quality of my video. <br><br>So if you want all the tools you need to express your true skills, you can get them by clicking on the button!
+    <!-- Section "Moi" -->
+    <section class="about-me-section">
+        <h2 class="section-title">Who is Valentin ?</h2>
+        <div class="about-me-container">
+            <div class="about-me-text">
+                <p class="about-me-description">
+                    Valentin is a content creator based in France who wants to make his life a real story, a real adventure with ever greater and limitless goals.
+                </p>
+                <p class="about-me-description">
+                    And one of his goals is, first and foremost, to break out of a society and a set framework. For me, life is a magnificent thing with no real second chance. And so I think that spending your life in front of a desk working under someone else's orders is not what life is all about.
+                </p>
+                <p class="about-me-description">
+                    So to avoid that, I decided to create my own personal brand. It will be the driving force behind all my projects, which I'll let you see below.
                 </p>
             </div>
+            <div class="about-me-image">
+                <img src="images/Untitled design (1).png" alt="Photo de Valentin" class="profile-image">
+                
+            </div>
         </div>
+    </section>
 
-        <div class="timeline-item">
-            <div class="sticky-wrapper">
-                <a href="https://iamvalentin-newsletter.beehiiv.com/subscribe" class="timeline-button">
-                    <div class="hover-effect"></div>
-                    NEWSLETTER
-                </a>
+    <!-- Section "Comment je vois la vie" -->
+    <section class="life-view-section">
+        <h2 class="section-title">His philosophies of life</h2>
+        <div class="cards-container" id="cardsContainer">
+            <div class="card">
+                <div class="card-inner">
+                    <h3>Hard Work</h3>
+                    <p>For me, work is the only thing that separates us from our dreams and objectives. I've become addicted to work, addicted to the process. The only thing that attracts me is work.</p>
+                </div>
             </div>
-            <div class="timeline-content">
-                <h2 class="timeline-title">Weekly Insights</h2>
-                <p class="timeline-description">
-                    Join our community of creators and receive exclusive content creation tips, industry trends, 
-                    and strategic advice directly in your inbox. Learn how to build and maintain an engaged audience 
-                    through authentic content.
-                </p>
+            <div class="card">
+                <div class="card-inner">
+                    <h3>About Money</h3>
+                    <p>For me, money is just a tool to help us have experiences. And that's not what life is all about. Life is all about relationships, the 5 senses and lots of other things that money can't buy.</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-inner">
+                    <h3>Relationships</h3>
+                    <p>Human relationships are essential for our mental health. And the people around me are something I pay a lot of attention to. These people have to push you to overcome yourself.</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-inner">
+                    <h3>Religious Beliefs</h3>
+                    <p>I believe that NOTHING on this planet happens by chance. There is a power that decides what happens. It has given you life, but it can also take it away. Be grateful</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-inner">
+                    <h3>Books</h3>
+                    <p>Books are a big part of my life, quite simply because almost all my most cherished knowledge is based on books. As they say, book is knowledge, knowledge is power.</p>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-inner">
+                    <h3>Sport</h3>
+                    <p>Sport is part of me. Ever since I was little, I've been running, kicking a ball or using a racket, but it was in tennis that I found the magic.</p>
+                </div>
             </div>
         </div>
+    </section>
 
-        <div class="timeline-item">
-            <div class="sticky-wrapper">
-                <a href="https://tally.so/r/mBAP1K" rel="noopener noreferrer" target="_blank" class="timeline-button">
-                    <div class="hover-effect"></div>
-                    1:1 CALL
-                </a>
+    <!-- Section "Mes ambitions" -->
+    <section class="ambitions-section">
+        <h2 class="section-title">His ambitions</h2>
+        <div class="ambitions-container" id="ambitionsContainer">
+            <div class="ambition-item">
+                <span class="ambition-number">01</span>
+                <h3 class="ambition-title">The right to real freedom</h3>
+                <p class="ambition-description">
+                    Ever since I started school, I've hated being told what to do, and even more so when there's no point. But for me being free isn't just that, being free also means being able to go where I want when I want without having to worry about the money in my bank account. For me, freedom is being able to do what I want with the people I love without having any real big restrictions.
+                </p>
             </div>
-            <div class="timeline-content">
-                <h2 class="timeline-title">Future of Content</h2>
-                <p class="timeline-description">
-                    Stay ahead of the curve with cutting-edge content creation strategies. Learn how to adapt 
-                    to platform changes, leverage new technologies, and maintain authentic connections with 
-                    your audience in an ever-evolving digital landscape.
+            <div class="ambition-item">
+                <span class="ambition-number">02</span>
+                <h3 class="ambition-title">Creating my own interior design brand</h3>
+                <p class="ambition-description">
+                    I've always loved creating. And when I was little, I always wanted to be an architect so that I could be master of my surroundings. And so I've always kept in the back of my mind the idea of wanting to create something that represents our personality and our way of life, and what better place to do that than the place we live in. So in a few years' time, I hope to be able to become part of your personality through my art in interior design.
+                </p>
+            </div>
+            <div class="ambition-item">
+                <span class="ambition-number">03</span>
+                <h3 class="ambition-title">My ultimate project</h3>
+                <p class="ambition-description">
+                    As I said, I love creating, creating lots of things in lots of different areas. And my final project would be to extend this creativity through different products of different types and in different areas. So my aim would be to keep an exclusive product in each collection to really emphasise the idea of community in this project. There are still a lot of things to define, but this project is one of the things that drives me the most and I'll do anything to achieve it. 
                 </p>
             </div>
         </div>
-    </div>
+    </section>
 
     <script>
-        document.querySelectorAll('.btn, .timeline-button').forEach(button => {
+        // Animation pour les boutons avec effet de hover
+        document.querySelectorAll('.btn').forEach(button => {
             const hoverEffect = button.querySelector('.hover-effect');
             let isHovered = false;
             let rafId = null;
@@ -498,113 +592,148 @@
                 hoverEffect.style.opacity = '0';
             });
         });
+
+        // Animation pour le défilement automatique des cartes
+const cardsContainer = document.getElementById('cardsContainer');
+let autoScrollInterval;
+let isDragging = false;
+let startX, scrollLeft;
+let pauseScroll = false;
+
+// Fonction pour dupliquer les cartes pour l'effet infini
+function setupInfiniteScroll() {
+    // Cloner toutes les cartes
+    const cards = Array.from(cardsContainer.querySelectorAll('.card'));
     
-        function updateTimeline() {
-            const windowHeight = window.innerHeight;
-            const timelineItems = document.querySelectorAll('.timeline-item');
-            const timelineLine = document.querySelector('.timeline-line');
-            
-            // Skip timeline updates on mobile
-            if (window.innerWidth <= 767) return;
-            
-            // Approche simplifiée pour éviter les bugs de positionnement
-            timelineItems.forEach((item, index) => {
-                const button = item.querySelector('.timeline-button');
-                const itemRect = item.getBoundingClientRect();
-                const viewportCenter = windowHeight / 2;
+    // Ajouter les clones à la fin
+    cards.forEach(card => {
+        const clone = card.cloneNode(true);
+        cardsContainer.appendChild(clone);
+    });
+}
+
+// Fonction pour le défilement automatique
+function startAutoScroll() {
+    if (pauseScroll) return;
+    
+    autoScrollInterval = setInterval(() => {
+        cardsContainer.scrollLeft += 1;
+        
+        // Vérifier si on doit sauter au début
+        const totalWidth = cardsContainer.scrollWidth / 2;
+        if (cardsContainer.scrollLeft >= totalWidth) {
+            // Sauter au début sans animation
+            cardsContainer.scrollLeft = 0;
+        }
+    }, 20);
+}
+
+// Configurer le défilement infini puis démarrer
+document.addEventListener('DOMContentLoaded', () => {
+    setupInfiniteScroll();
+    startAutoScroll();
+});
+
+// Arrêter le défilement quand on interagit avec les cartes
+cardsContainer.addEventListener('mouseenter', () => {
+    pauseScroll = true;
+    if (autoScrollInterval) {
+        clearInterval(autoScrollInterval);
+    }
+});
+
+cardsContainer.addEventListener('mouseleave', () => {
+    pauseScroll = false;
+    startAutoScroll();
+});
+
+// Gérer le défilement manuel (drag)
+cardsContainer.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    startX = e.pageX - cardsContainer.offsetLeft;
+    scrollLeft = cardsContainer.scrollLeft;
+    cardsContainer.style.cursor = 'grabbing';
+});
+
+cardsContainer.addEventListener('mouseleave', () => {
+    isDragging = false;
+    cardsContainer.style.cursor = 'grab';
+});
+
+cardsContainer.addEventListener('mouseup', () => {
+    isDragging = false;
+    cardsContainer.style.cursor = 'grab';
+});
+
+cardsContainer.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const x = e.pageX - cardsContainer.offsetLeft;
+    const walk = (x - startX) * 2; // Multiplication pour accélérer le défilement
+    cardsContainer.scrollLeft = scrollLeft - walk;
+    
+    // Vérifier si on doit sauter pendant le défilement manuel
+    const totalWidth = cardsContainer.scrollWidth / 2;
+    if (cardsContainer.scrollLeft >= totalWidth) {
+        cardsContainer.scrollLeft = 0;
+    } else if (cardsContainer.scrollLeft <= 0) {
+        cardsContainer.scrollLeft = totalWidth;
+    }
+});
+
+// Pour les appareils tactiles
+cardsContainer.addEventListener('touchstart', (e) => {
+    pauseScroll = true;
+    if (autoScrollInterval) {
+        clearInterval(autoScrollInterval);
+    }
+    isDragging = true;
+    startX = e.touches[0].pageX - cardsContainer.offsetLeft;
+    scrollLeft = cardsContainer.scrollLeft;
+});
+
+cardsContainer.addEventListener('touchend', () => {
+    isDragging = false;
+    setTimeout(() => {
+        pauseScroll = false;
+        startAutoScroll();
+    }, 3000); // Reprendre le défilement après 3 secondes d'inactivité
+});
+
+cardsContainer.addEventListener('touchmove', (e) => {
+    if (!isDragging) return;
+    const x = e.touches[0].pageX - cardsContainer.offsetLeft;
+    const walk = (x - startX) * 2;
+    cardsContainer.scrollLeft = scrollLeft - walk;
+    
+    // Vérifier si on doit sauter pendant le défilement tactile
+    const totalWidth = cardsContainer.scrollWidth / 2;
+    if (cardsContainer.scrollLeft >= totalWidth) {
+        cardsContainer.scrollLeft = 0;
+    } else if (cardsContainer.scrollLeft <= 0) {
+        cardsContainer.scrollLeft = totalWidth;
+    }
+});
+
+        // Animation de fade-in pour les éléments d'ambition lors du défilement
+        const ambitionItems = document.querySelectorAll('.ambition-item');
+        
+        function checkVisibility() {
+            ambitionItems.forEach(item => {
+                const rect = item.getBoundingClientRect();
+                const isVisible = rect.top <= window.innerHeight * 0.8;
                 
-                // Détecter si l'élément est proche du centre de l'écran
-                const distanceFromCenter = Math.abs((itemRect.top + itemRect.height/2) - viewportCenter);
-                const isNearCenter = distanceFromCenter < windowHeight * 0.3;
-                
-                // Obtenir la position du bouton précédent si applicable
-                let prevButtonBottom = -Infinity;
-                if (index > 0) {
-                    const prevButton = timelineItems[index-1].querySelector('.timeline-button');
-                    if (prevButton.style.position === 'fixed') {
-                        prevButtonBottom = prevButton.getBoundingClientRect().bottom;
-                    }
+                if (isVisible) {
+                    item.classList.add('visible');
                 }
-                
-                // Position du prochain bouton si applicable
-                let nextButtonTop = Infinity;
-                if (index < timelineItems.length - 1) {
-                    const nextButton = timelineItems[index+1].querySelector('.timeline-button');
-                    nextButtonTop = nextButton.getBoundingClientRect().top;
-                }
-                
-                if (isNearCenter) {
-                    // Seulement fixer le bouton s'il n'y a pas de conflit avec d'autres boutons
-                    const buttonHeight = button.offsetHeight;
-                    const wouldOverlap = (viewportCenter + buttonHeight/2) > nextButtonTop - 20 || 
-                                        (viewportCenter - buttonHeight/2) < prevButtonBottom + 20;
-                    
-                    if (!wouldOverlap) {
-                        // Fixer le bouton au centre
-                        button.style.position = 'fixed';
-                        button.style.top = '50%';
-                        button.style.left = '50%';
-                        button.style.transform = 'translate(-50%, -50%)';
-                    } else {
-                        // Éviter le chevauchement en maintenant une position absolue
-                        button.style.position = 'absolute';
-                        
-                        if ((itemRect.top + itemRect.height/2) < viewportCenter) {
-                            // L'élément est au-dessus, placer le bouton en bas
-                            button.style.top = '100%';
-                            button.style.transform = 'translate(-50%, -100%)';
-                        } else {
-                            // L'élément est en-dessous, placer le bouton en haut
-                            button.style.top = '0';
-                            button.style.transform = 'translateX(-50%)';
-                        }
-                    }
-                } else {
-                    // Loin du centre, position absolue
-                    button.style.position = 'absolute';
-                    
-                    if ((itemRect.top + itemRect.height/2) < viewportCenter) {
-                        // Au-dessus du viewport
-                        button.style.top = '100%';
-                        button.style.transform = 'translate(-50%, -100%)';
-                    } else {
-                        // En-dessous du viewport
-                        button.style.top = '0';
-                        button.style.transform = 'translateX(-50%)';
-                    }
-                }
-                
-                // Toujours aligner horizontalement sur la timeline
-                button.style.left = '50%';
             });
-            
-            // Deuxième passe pour éviter les déplacements brusques
-            // Vérifier les transitions entre état fixe et absolu
-            for (let i = 0; i < timelineItems.length - 1; i++) {
-                const currentButton = timelineItems[i].querySelector('.timeline-button');
-                const nextButton = timelineItems[i+1].querySelector('.timeline-button');
-                
-                if (currentButton.style.position === 'fixed' && nextButton.style.position === 'fixed') {
-                    // Éviter d'avoir deux boutons fixés en même temps
-                    const currentRect = currentButton.getBoundingClientRect();
-                    const nextRect = nextButton.getBoundingClientRect();
-                    
-                    if (nextRect.top - currentRect.bottom < 40) {
-                        // Si les boutons sont trop proches, rendre le prochain absolu
-                        nextButton.style.position = 'absolute';
-                        nextButton.style.top = '0';
-                        nextButton.style.transform = 'translateX(-50%)';
-                    }
-                }
-            }
         }
 
-        // Add event listeners for the timeline
-        window.addEventListener('scroll', updateTimeline);
-        window.addEventListener('resize', updateTimeline);
+        // Vérifier la visibilité des éléments au chargement
+        document.addEventListener('DOMContentLoaded', checkVisibility);
         
-        // Initial update
-        document.addEventListener('DOMContentLoaded', updateTimeline);
+        // Vérifier la visibilité lors du défilement
+        window.addEventListener('scroll', checkVisibility);
     </script>
 </body>
 </html>
